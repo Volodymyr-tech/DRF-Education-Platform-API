@@ -30,11 +30,11 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="users/avatars/", blank=True, null=True)
-    username = models.CharField(max_length=155,null=True, blank=True, blanck=True, verbose_name="Username")
-    country = models.CharField(
+    username = models.CharField(max_length=155,null=True, blank=True, verbose_name="Username")
+    city = models.CharField(
         max_length=20,
-        verbose_name="Страна проживания",
-        help_text="Введите страну проживания",
+        verbose_name="Where do you live?",
+        help_text="Choose a city",
         null=True,
         blank=True,
     )
