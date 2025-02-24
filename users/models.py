@@ -68,9 +68,18 @@ class Payments(models.Model):
         (TRANSFER, 'Transfer'),
     ]
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="payments")
     pay_data = models.DateTimeField(auto_now_add=True)
-    payed_course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
-    payed_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)
+    payed_course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True, related_name="payments")
+    payed_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True, related_name="payments")
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    payment_type = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    payment_type = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=True, null=True,)
+
+    class Meta:
+        verbose_name = 'Payment'
+        verbose_name_plural = 'Payments'
+        ordering = ['-pay_data']
+
+    def __str__(self):
+        return f'Payment for {self.user} - {self.amount} USD'
+
