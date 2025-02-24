@@ -2,6 +2,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from materials.models import Course, Lesson
+
 
 # Create your models here.
 class CustomUserManager(BaseUserManager):
@@ -52,3 +54,23 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+
+
+class Payments(models.Model):
+
+    CASH = 'cash'
+    TRANSFER = 'transfer'
+
+    STATUS_CHOICES = [
+        (CASH, 'Cash'), #data for admin panel
+        (TRANSFER, 'Transfer'),
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    pay_data = models.DateTimeField(auto_now_add=True)
+    payed_course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+    payed_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=10)
+    payment_type = models.CharField(max_length=10, choices=STATUS_CHOICES)
