@@ -1,7 +1,7 @@
 from rest_framework import viewsets, generics
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from .models import CustomUser, Payments
@@ -20,7 +20,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['username', 'email',]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 
@@ -31,4 +31,14 @@ class PaymentsListAPIView(generics.ListAPIView):
     search_fields = ['user__username', 'user__email', 'payed_lesson__title', 'payed_course__title', 'payment_type']
     ordering_fields = ['pay_data',]
     ordering = ['-pay_data']
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+class PaymentsCreateAPIView(generics.CreateAPIView):
+    queryset = Payments.objects.all()
+    serializer_class = PaymentSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

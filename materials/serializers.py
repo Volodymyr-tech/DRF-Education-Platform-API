@@ -10,7 +10,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     quantity_lessons = serializers.SerializerMethodField()
-    lessons = LessonSerializer(many=True, required=False, default=[], read_only=True) #many=True makes the serializer return a list of LessonSerializer objects
+    lessons = LessonSerializer(many=True, required=False, default=[], read_only=True)  #many=True makes the serializer return a list of LessonSerializer objects
 
     class Meta:
         model = Course
@@ -18,7 +18,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
     def get_quantity_lessons(self, instance):
-        return instance.lessons.count() #instatse is the course object and 'lessons' is the related name in the Course model
+        return instance.lessons.count()  #instatse is the course object and 'lessons' is the related name in the Course model
 
 
     # def create(self, validated_data):
