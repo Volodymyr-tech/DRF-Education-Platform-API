@@ -1,4 +1,5 @@
 from rest_framework import viewsets, generics
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 
 from users.permissions import IsOwner, IsModer
@@ -42,8 +43,10 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
         return self.queryset.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
+        if not self.request.user.groups.filter(name="Moders").exists():
+            serializer.save(owner=self.request.user)
+        else:
+            raise PermissionDenied("Moders cannot create Lessons")
 
 class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Lesson.objects.all()
