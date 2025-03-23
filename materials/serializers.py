@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Lesson
+from .models import Course, Lesson, Subscription
 from .validators import LinkValidator
 
 
@@ -13,7 +13,7 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     quantity_lessons = serializers.SerializerMethodField()
     lessons = LessonSerializer(many=True, required=False, default=[], read_only=True)  #many=True makes the serializer return a list of LessonSerializer objects
-
+    user_subscription = serializers.SerializerMethodField(required=False, read_only=True)
     class Meta:
         model = Course
         fields = '__all__'
@@ -22,6 +22,24 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_quantity_lessons(self, instance):
         return instance.lessons.count()  #instatse is the course object and 'lessons' is the related name in the Course model
+
+
+    def get_user_subscription(self, instance):
+        request = self.context.get('request')
+        if Subscription.objects.filter(user=request.user).exists():
+            return True
+        else:
+            return False
+
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Subscription
+        fields = '__all__'
+
+
 
 
     # def create(self, validated_data):

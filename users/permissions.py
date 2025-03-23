@@ -11,3 +11,18 @@ class IsModer(permissions.BasePermission):
         if request.user.groups.filter(name="Moders").exists():
             return True
         return False
+
+
+class IsSubscriber(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user == obj.user:
+            return True
+        return False
+
+
+
+class NotIsModer(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if not request.user.groups.filter(name="Moders").exists():
+            return True
+        return False

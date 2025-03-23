@@ -23,3 +23,13 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.course.title})"
+
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(CustomUser, related_name='subscriptions', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, related_name='subscribers', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course.title}"
+
