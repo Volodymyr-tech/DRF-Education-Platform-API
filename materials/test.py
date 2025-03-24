@@ -47,3 +47,9 @@ class LessonRetrieveUpdateDestroyTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(dict_data.get('title'), 'Not a new New test lesson')
         self.assertEqual(dict_data.get('description'), '1test description')
+
+
+    def test_delete(self):
+        url = f'http://127.0.0.1:8000/api/lessons/{self.lessons.id}/'
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
