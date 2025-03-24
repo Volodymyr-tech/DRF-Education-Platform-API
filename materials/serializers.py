@@ -4,10 +4,17 @@ from .validators import LinkValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    course = serializers.SerializerMethodField()
+    video_link = serializers.URLField(validators=[LinkValidator(link_field="video_link")], required=False)
     class Meta:
         model = Lesson
         fields = '__all__'
-        validators = [LinkValidator(link_field="video_link")]
+        #validators = [LinkValidator(link_field="video_link")]
+
+    def get_course(self, instance):
+        if instance.course is not None:
+            return instance.course.id
+        return None
 
 
 class CourseSerializer(serializers.ModelSerializer):

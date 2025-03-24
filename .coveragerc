@@ -1,0 +1,15 @@
+[run]
+omit =
+    */migrations/*
+    */serializers.py
+    */admin.py
+    */apps.py
+    */tests.py
+    */urls.py
+    */wsgi.py
+    */asgi.py
+    */management/*
+    */models.py
+    */validators.py
+    */paginators.py
+    */permissions.py

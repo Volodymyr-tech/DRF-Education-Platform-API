@@ -39,7 +39,8 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
-    #pagination_class = StandardResultsSetPagination
+    pagination_class = StandardResultsSetPagination
+    ordering = ['id']
     def get_queryset(self):
         if self.request.user.groups.filter(name="Moders").exists():
             return self.queryset.all()

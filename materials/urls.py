@@ -6,6 +6,8 @@ router = DefaultRouter()
 router.register(r'courses', CourseViewSet)
 #router.register(r'subscriptions', SubscriptionViewSet)
 
+app_name = 'materials'
+
 urlpatterns = [
     path('', include(router.urls)), # Include the generated API endpoints
     path('lessons/', LessonListCreateAPIView.as_view(), name='lesson-list-create'),
