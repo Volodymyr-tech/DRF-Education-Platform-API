@@ -10,6 +10,12 @@ from .serializers import CourseSerializer, LessonSerializer, SubscriptionSeriali
 
 
 class CourseViewSet(viewsets.ModelViewSet):
+    '''
+    - Authenticated users can view only their courses
+    - Moderators and owners can change courses
+    - Anyone can create courses
+    - Only owners can delete courses
+    '''
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsOwner, IsModer]
@@ -36,6 +42,10 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class LessonListCreateAPIView(generics.ListCreateAPIView):
+    '''
+    - Authenticated users can view all their lessons and can create new lessons
+    - Moders can view ALL lessons, but they are not allowed to create new lessons
+    '''
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
@@ -55,6 +65,9 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
             raise PermissionDenied("Moders cannot create Lessons")
 
 class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    '''
+    - Authenticated object owners can view, update, or delete their lessons
+    '''
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsOwner | IsModer]
@@ -69,6 +82,9 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SubscriptionCreateDestroyAPIView(generics.CreateAPIView, DestroyAPIView):
+    '''
+    - Authenticated users can subscribe to courses
+    '''
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
     permission_classes = [IsAuthenticated]
