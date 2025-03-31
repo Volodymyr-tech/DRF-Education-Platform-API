@@ -74,6 +74,7 @@ class Payments(models.Model):
     payed_lesson = models.ForeignKey('materials.Lesson', on_delete=models.CASCADE, null=True, blank=True, related_name="payments")
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     payment_type = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=True, null=True,)
+    link = models.URLField(max_length=500, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Payment'

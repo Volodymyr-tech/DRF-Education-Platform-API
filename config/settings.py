@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -38,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
+    'corsheaders',
     'rest_framework',
+ #   'django_celery_beat'
     'users',
     'materials',
     'django_filters',
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -160,3 +165,54 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  # FRONTEND
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000"]
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+
+# #Settings for Celery
+#
+# # The URL of the message broker
+# CELERY_BROKER_URL = 'redis://localhost:6379/0' # For example, Redis, which runs on port 6379 by default.
+#
+# # The URL of the results broker, also Redis
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+#
+# # timezone
+# CELERY_TIMEZONE = "Australia/Tasmania"
+#
+# # Task tracking flag
+# CELERY_TASK_TRACK_STARTED = True
+#
+# # Maximum time to complete a task
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+#
+# # Settings for Celery
+# CELERY_BEAT_SCHEDULE = {
+#     'task-name': {
+#         'task': 'myapp.tasks.my_task',
+#         'schedule': timedelta(minutes=10),
+#     },
+# }
+#
+#
+# CACHE_ENABLED = True
+#
+# if CACHE_ENABLED:
+#     CACHES = {
+#         'default': {
+#             'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+#             'LOCATION': 'redis://127.0.0.1:6379/0',
+#         }
+#     }
+#
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
