@@ -9,13 +9,18 @@ from .serializers import UserProfileSerializer, PaymentSerializer, RegisterSeria
 
 from rest_framework.permissions import AllowAny
 
+from .services import StripeTransaction
+
+
 class RegisterView(CreateAPIView):
+    '''Registerview class, allow enyone to register'''
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny] # allow anyone to register
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
+    '''UserviewSet allows only authenticated users and admins to see and make changes in objects. Also you can filter objects by username and email'''
     queryset = CustomUser.objects.all()
     serializer_class = UserProfileSerializer
     filter_backends = [SearchFilter, OrderingFilter]
@@ -25,6 +30,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 class PaymentsListAPIView(generics.ListAPIView):
+    '''This vies allows authenticateed users and admins to watch list of payments objects'''
     queryset = Payments.objects.all()
     serializer_class = PaymentSerializer
     filter_backends = [SearchFilter, OrderingFilter]
@@ -35,10 +41,17 @@ class PaymentsListAPIView(generics.ListAPIView):
 
 
 class PaymentsCreateAPIView(generics.CreateAPIView):
+    '''This view allow to create a payment link using Stripe API for authenticated user'''
     queryset = Payments.objects.all()
     serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        payment = serializer.save(user=self.request.user)
+        product = payment.payed_course if payment.payed_course else payment.payed_lesson
+        stripe_product = StripeTransaction.create_product(product.title, product.description)
+        stripe_price = StripeTransaction.create_price(stripe_product.name, payment.amount)
+        stripe_session = StripeTransaction.create_checkout_session('http://127.0.0.1:8000/', stripe_price.id, payment.user.email)
+        payment.link = stripe_session.url
+        payment.save()
