@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'rest_framework',
- #   'django_celery_beat'
+    'django_celery_beat',
+    'redis',
     'users',
     'materials',
     'django_filters',
@@ -177,42 +178,53 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = False
 
 
-# #Settings for Celery
-#
-# # The URL of the message broker
-# CELERY_BROKER_URL = 'redis://localhost:6379/0' # For example, Redis, which runs on port 6379 by default.
-#
-# # The URL of the results broker, also Redis
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-#
-# # timezone
-# CELERY_TIMEZONE = "Australia/Tasmania"
-#
-# # Task tracking flag
-# CELERY_TASK_TRACK_STARTED = True
-#
-# # Maximum time to complete a task
-# CELERY_TASK_TIME_LIMIT = 30 * 60
-#
-# # Settings for Celery
-# CELERY_BEAT_SCHEDULE = {
-#     'task-name': {
-#         'task': 'myapp.tasks.my_task',
-#         'schedule': timedelta(minutes=10),
-#     },
-# }
-#
-#
-# CACHE_ENABLED = True
-#
-# if CACHE_ENABLED:
-#     CACHES = {
-#         'default': {
-#             'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-#             'LOCATION': 'redis://127.0.0.1:6379/0',
-#         }
-#     }
-#
-# INTERNAL_IPS = [
-#     "127.0.0.1",
-# ]
+#Settings for Celery
+
+# The URL of the message broker
+CELERY_BROKER_URL = 'redis://localhost:6379/0' # For example, Redis, which runs on port 6379 by default.
+
+# The URL of the results broker, also Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# timezone
+CELERY_TIMEZONE = 'UTC'
+
+# Task tracking flag
+CELERY_TASK_TRACK_STARTED = True
+
+# Maximum time to complete a task
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# Settings for Celery
+CELERY_BEAT_SCHEDULE = {
+    'check_last_login': {
+        'task': 'users.tasks.check_last_login', # add way to the task
+        'schedule': timedelta(minutes=1), # schedule for the task
+    },
+}
+
+
+CACHE_ENABLED = True
+
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': 'redis://127.0.0.1:6379/0',
+        }
+    }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST")  # SMTP сервер Yandex
+EMAIL_PORT = os.getenv("EMAIL_PORT")  # Порт для SSL
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL")  # SSL для безопасного подключения
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # почта на Yandex
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # Пароль приложения Yandex
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

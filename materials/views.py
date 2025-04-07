@@ -4,9 +4,10 @@ from rest_framework.generics import DestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from users.paginators import StandardResultsSetPagination
-from users.permissions import IsOwner, IsModer, NotIsModer
+from users.permissions import IsOwner, IsModer, NotIsModer, IsSubscriber
 from .models import Course, Lesson, Subscription
 from .serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from .tasks import send_update_mail
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -24,7 +25,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         """DRF requires all permissions to return True, and if at least one returns False, it will be 403"""
         if self.action in ["list", "retrieve"]:
-            permission_classes = [IsAuthenticated, IsOwner | IsModer]  # authenticated users can view only their courses
+            permission_classes = [IsAuthenticated, IsOwner | IsModer | IsSubscriber]  # authenticated users can view only their courses
         elif self.action in ["update", "partial_update"]:
             permission_classes = [IsAuthenticated, IsOwner | IsModer] # only moders and owners can change courses
         elif self.action == "create":
@@ -39,6 +40,17 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+    def perform_update(self, serializer):
+        serializer.save()
+        try:
+            instance = self.get_object()
+            print(type(instance))
+            send_update_mail.delay_on_commit(instance.pk)
+            print(instance.pk)
+        except Exception as e:
+            print(e)
 
 
 class LessonListCreateAPIView(generics.ListCreateAPIView):
@@ -79,6 +91,10 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         elif self.request.method == "DELETE":
             permission_classes = [IsAuthenticated, IsOwner]  # only owners can delete lessons
         return [permission() for permission in permission_classes]
+
+    # def perform_update(self, serializer):
+    #     serializer.save()
+    #     send_update_mail.delay_on_commit(self.request.user.pk)
 
 
 class SubscriptionCreateDestroyAPIView(generics.CreateAPIView, DestroyAPIView):
