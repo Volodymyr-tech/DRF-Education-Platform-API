@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from users.models import CustomUser
 
@@ -8,6 +9,8 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='course_previews/', blank=True, null=True)
     description = models.TextField(blank=True)
     owner = models.ForeignKey(CustomUser, null=True, blank=True, related_name='course', on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)  # is set only when creating
+    last_update = models.DateTimeField(null=True, blank=True, auto_now=True)  # is set every time when obj updated
 
     class Meta:
         ordering = ['id']
