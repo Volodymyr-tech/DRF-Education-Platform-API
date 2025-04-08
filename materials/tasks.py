@@ -13,17 +13,24 @@ from users.models import CustomUser
 
 @shared_task
 def send_update_mail(pk):
-    subject = "Model name UPDATED"
-    message = "Go via the link and check our update"
-    from_email = settings.EMAIL_HOST_USER
+    course = Course.objects.filter(id=pk).first()
+    if not course:
+        return
 
-    print("SMTP From Email:", from_email)
+    update_time = timezone.now() - course.last_update
+    if update_time < timedelta(seconds=4):
+        print("Too early to send update mail.")
+        return
+
+    subject = "Model name UPDATED"
+    message = f"Go via the link and check our update {course.title - course.description}"
+    from_email = settings.EMAIL_HOST_USER
 
     customusers = CustomUser.objects.filter(subscriptions__course=pk)
     print(f"Founded users: {customusers.count()}")
+    print(f'{str(customusers.query)}')
 
     for user in customusers:
-        # Отправка письма
         try:
             send_mail(
                 subject,
@@ -35,13 +42,3 @@ def send_update_mail(pk):
             print(f"Message to {user.email} was sent")
         except Exception as e:
             print(e)
-
-
-@shared_task
-def check_last_course_update(pk):
-    course = Course.objects.filter(id=pk).first()
-    update_time = timezone.now() - course.last_update
-    if update_time >= timedelta(hours=4):
-        return True
-    else:
-        return False

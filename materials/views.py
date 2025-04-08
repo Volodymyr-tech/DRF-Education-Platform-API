@@ -7,7 +7,7 @@ from users.paginators import StandardResultsSetPagination
 from users.permissions import IsOwner, IsModer, NotIsModer, IsSubscriber
 from .models import Course, Lesson, Subscription
 from .serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
-from .tasks import send_update_mail, check_last_course_update
+from .tasks import send_update_mail
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -45,13 +45,10 @@ class CourseViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
         instance = self.get_object()
-        if check_last_course_update.delay_on_commit(instance.pk):
-            try:
-                #print(type(instance))
-                send_update_mail.delay_on_commit(instance.pk)
-                #print(instance.pk)
-            except Exception as e:
-                print(e)
+        try:
+            send_update_mail.delay_on_commit(instance.pk)
+        except Exception as e:
+            print(e)
         else:
             print("We wont sent message cause update was only few minutes ago")
 
