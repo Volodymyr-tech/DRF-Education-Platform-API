@@ -24,7 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
-
+        read_only_fields = ('created_at',)
 
 
     def get_quantity_lessons(self, instance):
