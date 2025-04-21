@@ -88,12 +88,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 load_dotenv()
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("NAME"),
-        "USER": os.getenv("USER"),
-        "PASSWORD": os.getenv("PASSWORD"),
-        "HOST": os.getenv("HOST"),
-        "PORT": os.getenv("PORT", default="5432"),
+        "ENGINE":   "django.db.backends.postgresql_psycopg2",
+        "NAME":     os.getenv("POSTGRES_DB", os.getenv("NAME")),
+        "USER":     os.getenv("POSTGRES_USER", os.getenv("USER")),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", os.getenv("PASSWORD")),
+        "HOST":     os.getenv("POSTGRES_HOST", os.getenv("HOST", "localhost")),
+        "PORT":     os.getenv("POSTGRES_PORT", os.getenv("PORT", "5432")),
     }
 }
 
@@ -134,6 +134,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -181,10 +182,10 @@ CORS_ALLOW_ALL_ORIGINS = False
 #Settings for Celery
 
 # The URL of the message broker
-CELERY_BROKER_URL = 'redis://localhost:6379/0' # For example, Redis, which runs on port 6379 by default.
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")# For example, Redis, which runs on port 6379 by default.
 
 # The URL of the results broker, also Redis
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 
 # timezone
 CELERY_TIMEZONE = 'UTC'
