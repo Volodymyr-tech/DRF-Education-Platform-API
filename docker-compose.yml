@@ -1,11 +1,11 @@
 version: '3.9'
 
-services:
+services: # describing services we're going to use
 
   web:
-    build: .
+    build: . # it uses DockerFile in main directory and install Python and Django code
     env_file:
-      - .env
+      - .env # giving access to environment variables
       - .env.docker
     command: >
       sh -c "python manage.py makemigrations && \
@@ -14,11 +14,11 @@ services:
              gunicorn config.wsgi:application --bind 0.0.0.0:8000"
 
     volumes:
-      - .:/app
-      - static_volume:/app/static
-    ports:
+      - .:/app # we use main directory and docker directory /app for saving changing in code
+      - static_volume:/app/static # it allows us to save data even if container was stopped
+    ports: # mapping host port with docker container port
       - "8000:8000"
-    depends_on:
+    depends_on: # it will run only if DB connection is True
       db:
         condition: service_healthy
       redis:
@@ -26,21 +26,21 @@ services:
 
 
   db:
-    image: postgres:17
-    env_file:
+    image: postgres:17 # using image from DockerHub
+    env_file: # giving access to environment variables
       - .env
       - .env.docker
-    volumes:
+    volumes:  # it allows us to save data even if container was stopped
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
+    healthcheck: # testing DB before we start server
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 30s
       timeout: 10s
       retries: 5
 
   redis:
-    image: redis:7
-    env_file:
+    image: redis:7 # using image from DockerHub
+    env_file: # giving access to environment variables
       - .env
       - .env.docker
     ports:
@@ -84,6 +84,20 @@ services:
     depends_on:
       - db
       - redis
+
+  nginx:
+    build:
+      context: ./nginx  # путь к папке с Dockerfile и nginx.conf
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./staticfiles:/usr/share/nginx/html
+      - static_volume:/app/static  # чтобы nginx раздавал статику
+    depends_on:
+      - web
+
+
 
 volumes:
   postgres_data:
