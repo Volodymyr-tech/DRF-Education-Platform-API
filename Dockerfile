@@ -1,20 +1,20 @@
 FROM python:3.11.2
 WORKDIR /app
 
-# Подготовка Poetry
+# Install Poetry
 RUN pip install poetry
 
 
-# Отключаем Poetry-venv, чтобы зависимости шли сразу в /usr/local
+# Turn-off Poetry-venv, so that the dependencies go directly to /usr/local
 RUN poetry config virtualenvs.create false \
  && poetry config virtualenvs.in-project false
 
-# Копируем манифесты зависимостей и устанавливаем их
+# Copy the dependency manifests and install them
 COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-root --no-interaction
 RUN poetry add gunicorn
 
-# Копируем весь код приложения
+# Copy all code of app
 COPY . .
 
 

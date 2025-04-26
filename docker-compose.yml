@@ -87,9 +87,9 @@ services: # describing services we're going to use
 
   nginx:
     build:
-      context: ./nginx  # путь к папке с Dockerfile и nginx.conf
+      context: ./nginx  # path to the directory with Dockerfile and nginx.conf
     ports:
-      - "80:80"
+      - "80:80" # mapping host port with docker port
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./staticfiles:/app/staticfiles
