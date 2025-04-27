@@ -26,14 +26,17 @@ jobs:
         #poetry run runs any command inside the virtual environment that Poetry creates.
         #Without this, the command is executed "as is" — and there is no Django.
 
-      - name: Load environment and migrate
+      - name: Set environment variables
         run: |
-          export $(grep -v '^#' .env | xargs)
-          export $(grep -v '^#' .env.docker | xargs)
-          poetry run python manage.py migrate
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
+          echo "USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
+          echo "PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
 
-      - name: Load environment and run tests
-        run: |
-          export $(grep -v '^#' .env | xargs)
-          export $(grep -v '^#' .env.docker | xargs)
-          poetry run python manage.py test
+      - name: Run migrate
+        run: poetry run python manage.py migrate
+
+      - name: Run tests
+        run: poetry run python manage.py test
