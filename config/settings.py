@@ -86,16 +86,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 load_dotenv()
-DATABASES = {
-    "default": {
-        "ENGINE":   "django.db.backends.postgresql_psycopg2",
-        "NAME":     os.getenv("POSTGRES_DB", os.getenv("NAME")),
-        "USER":     os.getenv("POSTGRES_USER", os.getenv("USER")),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", os.getenv("PASSWORD")),
-        "HOST":     os.getenv("POSTGRES_HOST", os.getenv("HOST", "localhost")),
-        "PORT":     os.getenv("POSTGRES_PORT", os.getenv("PORT", "5432")),
+if os.getenv('GITHUB_ACTIONS') == 'true':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',  #
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE":   "django.db.backends.postgresql_psycopg2",
+            "NAME":     os.getenv("POSTGRES_DB", os.getenv("NAME")),
+            "USER":     os.getenv("POSTGRES_USER", os.getenv("USER")),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD", os.getenv("PASSWORD")),
+            "HOST":     os.getenv("POSTGRES_HOST", os.getenv("HOST", "localhost")),
+            "PORT":     os.getenv("POSTGRES_PORT", os.getenv("PORT", "5432")),
+        }
+    }
 
 
 # Password validation

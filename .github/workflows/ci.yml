@@ -6,8 +6,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env: #
+      GITHUB_ACTIONS: true
+
     steps:
-      - name: Check out code
+      - name: Check out code # allow us to clone code to container where we gonna do jobs
         uses: actions/checkout@v3
 
       - name: Set up Python
