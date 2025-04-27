@@ -22,9 +22,10 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install --no-root
-
+#poetry run runs any command inside the virtual environment that Poetry creates.
+#Without this, the command is executed "as is" — and there is no Django.
       - name: Run migrate
-        run: python manage.py migrate
+        run: poetry run python manage.py migrate
 
       - name: Run tests
-        run: python manage.py test
+        run: poetry run python manage.py test
