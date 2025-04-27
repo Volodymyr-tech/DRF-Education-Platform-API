@@ -20,10 +20,17 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
 
       - name: Install dependencies
+        # flag --no-root for DO NOT install the project itself as a package.
         run: |
           poetry install --no-root
-#poetry run runs any command inside the virtual environment that Poetry creates.
-#Without this, the command is executed "as is" — and there is no Django.
+        #poetry run runs any command inside the virtual environment that Poetry creates.
+        #Without this, the command is executed "as is" — and there is no Django.
+
+      - name: Load environment variables
+        run: |
+          export $(grep -v '^#' .env | xargs)
+          export $(grep -v '^#' .env.docker | xargs)
+
       - name: Run migrate
         run: poetry run python manage.py migrate
 
