@@ -26,13 +26,14 @@ jobs:
         #poetry run runs any command inside the virtual environment that Poetry creates.
         #Without this, the command is executed "as is" — and there is no Django.
 
-      - name: Load environment variables
+      - name: Load environment and migrate
         run: |
           export $(grep -v '^#' .env | xargs)
           export $(grep -v '^#' .env.docker | xargs)
+          poetry run python manage.py migrate
 
-      - name: Run migrate
-        run: poetry run python manage.py migrate
-
-      - name: Run tests
-        run: poetry run python manage.py test
+      - name: Load environment and run tests
+        run: |
+          export $(grep -v '^#' .env | xargs)
+          export $(grep -v '^#' .env.docker | xargs)
+          poetry run python manage.py test
