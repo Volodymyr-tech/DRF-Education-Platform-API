@@ -2,7 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-#from materials.models import Course, Lesson
+# from materials.models import Course, Lesson
 
 
 # Create your models here.
@@ -32,7 +32,9 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="users/avatars/", blank=True, null=True)
-    username = models.CharField(max_length=155,null=True, blank=True, verbose_name="Username")
+    username = models.CharField(
+        max_length=155, null=True, blank=True, verbose_name="Username"
+    )
     city = models.CharField(
         max_length=20,
         verbose_name="Where do you live?",
@@ -56,31 +58,47 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-
-
 class Payments(models.Model):
 
-    CASH = 'cash'
-    TRANSFER = 'transfer'
+    CASH = "cash"
+    TRANSFER = "transfer"
 
     STATUS_CHOICES = [
-        (CASH, 'Cash'), #data for admin panel
-        (TRANSFER, 'Transfer'),
+        (CASH, "Cash"),  # data for admin panel
+        (TRANSFER, "Transfer"),
     ]
 
-    user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name="payments")
+    user = models.ForeignKey(
+        "users.CustomUser", on_delete=models.CASCADE, related_name="payments"
+    )
     pay_data = models.DateTimeField(auto_now_add=True)
-    payed_course = models.ForeignKey('materials.Course', on_delete=models.CASCADE, null=True, blank=True, related_name="payments")
-    payed_lesson = models.ForeignKey('materials.Lesson', on_delete=models.CASCADE, null=True, blank=True, related_name="payments")
+    payed_course = models.ForeignKey(
+        "materials.Course",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="payments",
+    )
+    payed_lesson = models.ForeignKey(
+        "materials.Lesson",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="payments",
+    )
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    payment_type = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=True, null=True,)
+    payment_type = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        blank=True,
+        null=True,
+    )
     link = models.URLField(max_length=500, blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Payment'
-        verbose_name_plural = 'Payments'
-        ordering = ['-pay_data']
+        verbose_name = "Payment"
+        verbose_name_plural = "Payments"
+        ordering = ["-pay_data"]
 
     def __str__(self):
-        return f'Payment for {self.user} - {self.amount} USD'
-
+        return f"Payment for {self.user} - {self.amount} USD"

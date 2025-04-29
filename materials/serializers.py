@@ -1,15 +1,19 @@
 from rest_framework import serializers
+
 from .models import Course, Lesson, Subscription
 from .validators import LinkValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
     course = serializers.SerializerMethodField()
-    video_link = serializers.URLField(validators=[LinkValidator(link_field="video_link")], required=False)
+    video_link = serializers.URLField(
+        validators=[LinkValidator(link_field="video_link")], required=False
+    )
+
     class Meta:
         model = Lesson
-        fields = '__all__'
-        #validators = [LinkValidator(link_field="video_link")]
+        fields = "__all__"
+        # validators = [LinkValidator(link_field="video_link")]
 
     def get_course(self, instance):
         if instance.course is not None:
@@ -19,35 +23,36 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     quantity_lessons = serializers.SerializerMethodField()
-    lessons = LessonSerializer(many=True, required=False, default=[], read_only=True)  #many=True makes the serializer return a list of LessonSerializer objects
-    user_subscription = serializers.SerializerMethodField(required=False, read_only=True)
+    lessons = LessonSerializer(
+        many=True, required=False, default=[], read_only=True
+    )  # many=True makes the serializer return a list of LessonSerializer objects
+    user_subscription = serializers.SerializerMethodField(
+        required=False, read_only=True
+    )
+
     class Meta:
         model = Course
-        fields = '__all__'
-        read_only_fields = ('created_at',)
-
+        fields = "__all__"
+        read_only_fields = ("created_at",)
 
     def get_quantity_lessons(self, instance):
-        return instance.lessons.count()  #instatse is the course object and 'lessons' is the related name in the Course model
-
+        return (
+            instance.lessons.count()
+        )  # instatse is the course object and 'lessons' is the related name in the Course model
 
     def get_user_subscription(self, instance):
-        request = self.context.get('request')
+        request = self.context.get("request")
         if Subscription.objects.filter(user=request.user).exists():
             return True
         else:
             return False
 
 
-
 class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = '__all__'
-
-
-
+        fields = "__all__"
 
     # def create(self, validated_data):
     #     lessons_data = validated_data.pop('lessons', None)  # getting info about lessons from the validated_data

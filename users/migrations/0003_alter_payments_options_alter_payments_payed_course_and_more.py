@@ -8,33 +8,58 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('materials', '0002_course_owner_lesson_owner'),
-        ('users', '0002_payments'),
+        ("materials", "0002_course_owner_lesson_owner"),
+        ("users", "0002_payments"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='payments',
-            options={'ordering': ['-pay_data'], 'verbose_name': 'Payment', 'verbose_name_plural': 'Payments'},
+            name="payments",
+            options={
+                "ordering": ["-pay_data"],
+                "verbose_name": "Payment",
+                "verbose_name_plural": "Payments",
+            },
         ),
         migrations.AlterField(
-            model_name='payments',
-            name='payed_course',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='payments', to='materials.course'),
+            model_name="payments",
+            name="payed_course",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="payments",
+                to="materials.course",
+            ),
         ),
         migrations.AlterField(
-            model_name='payments',
-            name='payed_lesson',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='payments', to='materials.lesson'),
+            model_name="payments",
+            name="payed_lesson",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="payments",
+                to="materials.lesson",
+            ),
         ),
         migrations.AlterField(
-            model_name='payments',
-            name='payment_type',
-            field=models.CharField(blank=True, choices=[('cash', 'Cash'), ('transfer', 'Transfer')], max_length=10, null=True),
+            model_name="payments",
+            name="payment_type",
+            field=models.CharField(
+                blank=True,
+                choices=[("cash", "Cash"), ("transfer", "Transfer")],
+                max_length=10,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='payments',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='payments', to=settings.AUTH_USER_MODEL),
+            model_name="payments",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="payments",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

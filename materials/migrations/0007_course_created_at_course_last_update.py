@@ -7,18 +7,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('materials', '0006_alter_course_owner'),
+        ("materials", "0006_alter_course_owner"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='created_at',
-            field=models.DateTimeField(blank=True, default=django.utils.timezone.now, null=True),
+            model_name="course",
+            name="created_at",
+            field=models.DateTimeField(
+                blank=True, default=django.utils.timezone.now, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='course',
-            name='last_update',
+            model_name="course",
+            name="last_update",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
     ]

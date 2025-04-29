@@ -1,57 +1,73 @@
-from rest_framework import viewsets, generics
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import generics, viewsets
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
 from .models import CustomUser, Payments
-from .serializers import UserProfileSerializer, PaymentSerializer, RegisterSerializer
-
-from rest_framework.permissions import AllowAny
-
+from .serializers import PaymentSerializer, RegisterSerializer, UserProfileSerializer
 from .services import StripeTransaction
 
 
 class RegisterView(CreateAPIView):
-    '''Registerview class, allow enyone to register'''
+    """Registerview class, allow enyone to register"""
+
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny] # allow anyone to register
+    permission_classes = [AllowAny]  # allow anyone to register
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    '''UserviewSet allows only authenticated users and admins to see and make changes in objects. Also you can filter objects by username and email'''
+    """UserviewSet allows only authenticated users and admins to see and make changes in objects.
+    Also, you can filter objects by username and email"""
+
     queryset = CustomUser.objects.all()
     serializer_class = UserProfileSerializer
     filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['username', 'email',]
+    search_fields = [
+        "username",
+        "email",
+    ]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
-
 class PaymentsListAPIView(generics.ListAPIView):
-    '''This vies allows authenticateed users and admins to watch list of payments objects'''
+    """This vies allows authenticated users and admins to watch list of payments objects"""
+
     queryset = Payments.objects.all()
     serializer_class = PaymentSerializer
     filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['user__username', 'user__email', 'payed_lesson__title', 'payed_course__title', 'payment_type']
-    ordering_fields = ['pay_data',]
-    ordering = ['-pay_data']
+    search_fields = [
+        "user__username",
+        "user__email",
+        "payed_lesson__title",
+        "payed_course__title",
+        "payment_type",
+    ]
+    ordering_fields = [
+        "pay_data",
+    ]
+    ordering = ["-pay_data"]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class PaymentsCreateAPIView(generics.CreateAPIView):
-    '''This view allow to create a payment link using Stripe API for authenticated user'''
+    """This view allow to create a payment link using Stripe API for authenticated user"""
+
     queryset = Payments.objects.all()
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
 
-
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user)
         product = payment.payed_course if payment.payed_course else payment.payed_lesson
-        stripe_product = StripeTransaction.create_product(product.title, product.description)
-        stripe_price = StripeTransaction.create_price(stripe_product.name, payment.amount)
-        stripe_session = StripeTransaction.create_checkout_session('http://127.0.0.1:8000/', stripe_price.id, payment.user.email)
+        stripe_product = StripeTransaction.create_product(
+            product.title, product.description
+        )
+        stripe_price = StripeTransaction.create_price(
+            stripe_product.name, payment.amount
+        )
+        stripe_session = StripeTransaction.create_checkout_session(
+            "http://127.0.0.1:8000/", stripe_price.id, payment.user.email
+        )
         payment.link = stripe_session.url
         payment.save()
