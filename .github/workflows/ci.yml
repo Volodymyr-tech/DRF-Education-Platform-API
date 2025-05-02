@@ -103,6 +103,7 @@ jobs:
       - name: Copy docker-compose.yml to server
         run: |
           scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/myapp/
+          scp -o StrictHostKeyChecking=no Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/myapp/
 
       - name: Deploy to Server
         run: |
