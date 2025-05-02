@@ -8,9 +8,11 @@ RUN pip install poetry
 # Turn-off Poetry-venv, so that the dependencies go directly to /usr/local
 RUN poetry config virtualenvs.create false \
  && poetry config virtualenvs.in-project false
-
+RUN pip install --upgrade pip setuptools wheel
+RUN pip uninstall -y urllib3 || true
 # Copy the dependency manifests and install them
 COPY pyproject.toml poetry.lock* ./
+
 RUN poetry install --no-root --no-interaction
 RUN poetry add gunicorn
 
