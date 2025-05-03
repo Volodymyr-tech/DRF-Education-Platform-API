@@ -101,16 +101,7 @@ jobs:
       - name: Set up SSH VM and SSH for GitHub
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key:
-            ${{ secrets.SSH_KEY }}
-
-
-#
-#      - name: Upload Compose & config files
-#        run: |
-#          scp -o StrictHostKeyChecking=no \
-#            docker-compose.yml Dockerfile \
-#            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/myapp/
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
       - name: Deploy to server pull code, clean up & restart
         run: |
@@ -121,11 +112,6 @@ jobs:
             git pull origin main
                
             docker system prune -a --volumes -f
-            
-#            TAG=${{ github.sha }}
-#
-#            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:$TAG
-#            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:$TAG
 
             docker compose down --remove-orphans
             git pull origin main
