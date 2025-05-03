@@ -113,7 +113,7 @@ jobs:
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
 
           cd ~/myapp
-
+          git pull origin main
           echo "TAG=${{ github.sha }}" > .env.deploy
 
           docker compose down
