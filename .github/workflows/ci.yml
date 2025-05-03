@@ -1,6 +1,6 @@
 name: Django CI
 
-on: [push, pull_request]
+on: [push, pull_request,]
 
 jobs:
   lint:
@@ -99,18 +99,18 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-
-      - name: Upload Compose & config files
-        run: |
-          scp -o StrictHostKeyChecking=no \
-            docker-compose.yml Dockerfile \
-            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/myapp/
+#
+#      - name: Upload Compose & config files
+#        run: |
+#          scp -o StrictHostKeyChecking=no \
+#            docker-compose.yml Dockerfile \
+#            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/myapp/
 
       - name: Deploy to server pull code, clean up & restart
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             set -xe
-            cd ~/myapp
+            cd ~/myapp/DRF-Education-Platform-API
             
             docker system prune -a --volumes -f
             
