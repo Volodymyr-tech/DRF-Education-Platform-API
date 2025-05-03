@@ -104,7 +104,6 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no \
             docker-compose.yml \
-            nginx/nginx.conf \
             ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/myapp/
 
       - name: Deploy to server pull code, clean up & restart
