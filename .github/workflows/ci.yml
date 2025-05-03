@@ -103,7 +103,7 @@ jobs:
       - name: Upload Compose & config files
         run: |
           scp -o StrictHostKeyChecking=no \
-            docker-compose.yml \
+            docker-compose.yml Dockerfile \
             ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/myapp/
 
       - name: Deploy to server pull code, clean up & restart

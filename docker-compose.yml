@@ -3,7 +3,7 @@ version: '3.9'
 services: # describing services we're going to use
 
   web:
-    image: valdemarbackend/myapp:${TAG} # it uses DockerFile in main directory and install Python and Django code
+    build: . # it uses DockerFile in main directory and install Python and Django code
     env_file:
       - .env # giving access to environment variables
       - .env.docker
@@ -86,9 +86,8 @@ services: # describing services we're going to use
       - redis
 
   nginx:
-    image: valdemarbackend/myapp-nginx:${TAG}
-#    build:
-#      context: ./nginx  # path to the directory with Dockerfile and nginx.conf
+    build:
+      context: ./nginx  # path to the directory with Dockerfile and nginx.conf
     ports:
       - "80:80" # mapping host port with docker port
     volumes:
