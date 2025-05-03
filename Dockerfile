@@ -1,4 +1,4 @@
-FROM python:3.11.2
+FROM python:3.11.2 AS base
 WORKDIR /app
 
 # Install Poetry
