@@ -3,7 +3,10 @@ version: '3.9'
 services: # describing services we're going to use
 
   web:
-    build: . # it uses DockerFile in main directory and install Python and Django code
+    build:  # it uses DockerFile in main directory and install Python and Django code
+      context: .
+      dockerfile: Dockerfile
+      target: backend
     env_file:
       - .env # giving access to environment variables
       - .env.docker
@@ -43,8 +46,6 @@ services: # describing services we're going to use
     env_file: # giving access to environment variables
       - .env
       - .env.docker
-    ports:
-      - "6379:6379"
     healthcheck:
       test: ['CMD-SHELL', 'redis-cli', 'ping']
       interval: 30s
@@ -52,19 +53,15 @@ services: # describing services we're going to use
       retries: 5
 
   celery:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: celery
     env_file:
       - .env
       - .env.docker
-    command:
-      - celery
-      - -A
-      - config
-      - worker
-      - -l
-      - INFO
-      - -P
-      - eventlet
+    command: >
+      celery -A config worker -l INFO -P eventlet
     volumes:
       - .:/app
     depends_on:
@@ -72,7 +69,10 @@ services: # describing services we're going to use
       - redis
 
   celery_beat:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: beat
     env_file:
       - .env
       - .env.docker
