@@ -100,22 +100,20 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Copy docker-compose.yml to server
-        run: |
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/myapp/
-          scp -o StrictHostKeyChecking=no Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/myapp/
-
-      - name: Deploy to Server
+      - name: Deploy to server pull code, clean up & restart
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          export TAG=${{ github.sha }}
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            set -xe
+            cd ~/myapp
 
-          cd ~/myapp
-          git pull origin main
-          echo "TAG=${{ github.sha }}" > .env.deploy
+            git fetch origin
+            git reset --hard origin/main
 
-          docker compose down
-          docker compose up -d --build
+            TAG=${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:$TAG
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:$TAG
+
+
+            docker compose down --remove-orphans
+            docker compose up -d
           EOF
