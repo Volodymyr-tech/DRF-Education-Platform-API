@@ -1,10 +1,7 @@
 name: Django CI
 
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
   lint:
@@ -67,28 +64,46 @@ jobs:
       - name: Run tests
         run: poetry run python manage.py test
 
-  build:
-    runs-on: ubuntu-latest
-    needs: test
 
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    # только пуш в main
+    if: github.ref == 'refs/heads/develop'
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Log in to Docker Hub
-        run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build Docker image and Push Docker image to Docker Hub
+      - name: Build & push backend image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+          docker build --target backend \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
 
-      - name: # Build and push Nginx
+      - name: Build & push nginx image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} -f ./nginx/Dockerfile ./nginx/
+          docker build --target nginx \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} \
+            -f ./nginx/Dockerfile ./nginx
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
 
+      - name: Build & push Celery worker image
+        run: |
+          docker build --target celery \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
 
+      - name: Build & push Celery beat image
+        run: |
+          docker build --target beat \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -109,11 +124,10 @@ jobs:
             set -xe
             cd ~/myapp/DRF-Education-Platform-API
                
-            git pull origin main
-               
             docker system prune -a --volumes -f
-
             docker compose down --remove-orphans
-            git pull origin main
+          
+            docker-compose pull
+
             docker compose up -d
           EOF

@@ -23,5 +23,15 @@ RUN poetry add gunicorn
 COPY . .
 
 
-EXPOSE 8000
+FROM base AS backend
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# Celery worker
+FROM base AS celery
+CMD ["celery", "-A app worker", "--loglevel=info"]
+
+# Celery beat
+FROM base AS beat
+CMD ["celery", "-A app beat", "--loglevel=info"]
+
+EXPOSE 8000
