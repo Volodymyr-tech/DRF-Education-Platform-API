@@ -1,6 +1,10 @@
 name: Django CI
 
-on: [push, pull_request,]
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   lint:
@@ -94,10 +98,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
+      - name: Set up SSH VM and SSH for GitHub
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
+          ssh-private-key:
+            ${{ secrets.SSH_KEY }}
+
 
 #
 #      - name: Upload Compose & config files
@@ -111,14 +117,17 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             set -xe
             cd ~/myapp/DRF-Education-Platform-API
-            
+               
+            git pull origin main
+               
             docker system prune -a --volumes -f
             
-            TAG=${{ github.sha }}
-          
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:$TAG
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:$TAG
+#            TAG=${{ github.sha }}
+#
+#            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:$TAG
+#            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:$TAG
 
             docker compose down --remove-orphans
+            git pull origin main
             docker compose up -d
           EOF
