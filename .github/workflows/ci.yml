@@ -74,11 +74,10 @@ jobs:
       - name: Log in to Docker Hub
         run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }} .
-
-      - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+      - name: Build Docker image and Push Docker image to Docker Hub
+        run:
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
 
       - name: # Build and push Nginx
         run: |
@@ -91,8 +90,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -102,21 +99,26 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
+
+      - name: Upload Compose & config files
+        run: |
+          scp -o StrictHostKeyChecking=no \
+            docker-compose.yml \
+            nginx/nginx.conf \
+            ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/myapp/
+
       - name: Deploy to server pull code, clean up & restart
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             set -xe
             cd ~/myapp
-
-            git fetch origin
-            git reset --hard origin/main
             
             docker system prune -a --volumes -f
             
             TAG=${{ github.sha }}
+          
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:$TAG
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:$TAG
-
 
             docker compose down --remove-orphans
             docker compose up -d
