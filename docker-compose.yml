@@ -26,6 +26,8 @@ services: # describing services we're going to use
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - myapp-net
 
 
   db:
@@ -40,6 +42,8 @@ services: # describing services we're going to use
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - myapp-net
 
   redis:
     image: redis:7 # using image from DockerHub
@@ -51,6 +55,8 @@ services: # describing services we're going to use
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - myapp-net
 
   celery:
     build:
@@ -67,6 +73,8 @@ services: # describing services we're going to use
     depends_on:
       - db
       - redis
+    networks:
+      - myapp-net
 
   celery_beat:
     build:
@@ -84,6 +92,8 @@ services: # describing services we're going to use
     depends_on:
       - db
       - redis
+    networks:
+      - myapp-net
 
   nginx:
     build:
@@ -95,9 +105,14 @@ services: # describing services we're going to use
       - static_volume:/app/staticfiles
     depends_on:
       - web
-
+    networks:
+      - myapp-net
 
 
 volumes:
   postgres_data:
   static_volume:
+
+networks:
+  myapp-net:
+    driver: bridge

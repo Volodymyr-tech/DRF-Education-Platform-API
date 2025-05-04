@@ -91,6 +91,18 @@ jobs:
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} -f ./nginx/Dockerfile ./nginx/
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
 
+      - name: Pull official Postgres & push to your Hub
+        run: |
+          docker pull postgres:17
+          docker tag postgres:17 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
+
+      - name: Pull official Redis & push to your Hub
+        run: |
+          docker pull redis:7
+          docker tag redis:7 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
+
       - name: Build & push Celery worker image
         run: |
           docker build --target celery \
@@ -111,6 +123,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
       - name: Set up SSH VM and SSH for GitHub
         uses: webfactory/ssh-agent@v0.5.4
         with:
@@ -125,7 +143,19 @@ jobs:
             docker system prune -a --volumes -f
             docker compose down --remove-orphans
           
-            docker-compose pull
-
-            docker compose up -d
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
+          
+            docker run -d   
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
+          
           EOF
