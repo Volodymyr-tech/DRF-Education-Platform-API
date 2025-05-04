@@ -85,13 +85,12 @@ jobs:
 
       - name: Tag and push images
         run: |
-          TAG=${{ github.sha }}
           USER=${{ secrets.DOCKER_HUB_USERNAME }}
 
-          docker push $USER/myapp-backend:$TAG
-          docker push $USER/myapp-nginx:$TAG
-          docker push $USER/myapp-celery:$TAG
-          docker push $USER/myapp-beat:$TAG
+          docker push $USER/myapp-backend
+          docker push $USER/myapp-nginx
+          docker push $USER/myapp-celery
+          docker push $USER/myapp-beat
 
       - name: Pull official Postgres & push to your Hub
         run: |
@@ -137,18 +136,18 @@ jobs:
             docker rm $(docker ps -aq)
             docker rmi -f $(docker images -a -q)
           
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:latest
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:latest
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:latest
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:latest
           
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:latest
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:latest
             docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
             docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:latest
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:latest
           
           EOF
