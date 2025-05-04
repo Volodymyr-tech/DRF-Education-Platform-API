@@ -80,16 +80,23 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build & push backend image
-        run: |
-          docker build --target backend \
-            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
+      - name: Build all images using docker-compose
+        run: docker-compose build
 
-      - name: Build & push nginx image
+      - name: Tag and push images
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} -f ./nginx/Dockerfile ./nginx/
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+          TAG=${{ github.sha }}
+          USER=${{ secrets.DOCKER_HUB_USERNAME }}
+
+          docker tag drf-education-platform-api_web       $USER/myapp-backend:$TAG
+          docker tag drf-education-platform-api_nginx     $USER/myapp-nginx:$TAG
+          docker tag drf-education-platform-api_celery    $USER/myapp-celery:$TAG
+          docker tag drf-education-platform-api_celery_beat $USER/myapp-beat:$TAG
+
+          docker push $USER/myapp-backend:$TAG
+          docker push $USER/myapp-nginx:$TAG
+          docker push $USER/myapp-celery:$TAG
+          docker push $USER/myapp-beat:$TAG
 
       - name: Pull official Postgres & push to your Hub
         run: |
@@ -103,17 +110,7 @@ jobs:
           docker tag redis:7 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
 
-      - name: Build & push Celery worker image
-        run: |
-          docker build --target celery \
-            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
 
-      - name: Build & push Celery beat image
-        run: |
-          docker build --target beat \
-            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
