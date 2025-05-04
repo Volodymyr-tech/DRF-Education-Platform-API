@@ -114,6 +114,6 @@ jobs:
             docker system prune -a --volumes -f
 
             docker compose down --remove-orphans
-            git pull origin main
+
             docker compose up -d
           EOF
