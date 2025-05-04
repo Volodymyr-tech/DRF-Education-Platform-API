@@ -88,9 +88,7 @@ jobs:
 
       - name: Build & push nginx image
         run: |
-          docker build --target nginx \
-            -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} \
-            -f ./nginx/Dockerfile ./nginx
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} -f ./nginx/Dockerfile ./nginx/
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
 
       - name: Build & push Celery worker image
