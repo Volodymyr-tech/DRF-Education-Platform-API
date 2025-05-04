@@ -7,6 +7,7 @@ services: # describing services we're going to use
       context: .
       dockerfile: Dockerfile
       target: backend
+    image: valdemarbackend/myapp-backend
     env_file:
       - .env # giving access to environment variables
       - .env.docker
@@ -63,6 +64,7 @@ services: # describing services we're going to use
       context: .
       dockerfile: Dockerfile
       target: celery
+    image: valdemarbackend/myapp-celery
     env_file:
       - .env
       - .env.docker
@@ -81,6 +83,7 @@ services: # describing services we're going to use
       context: .
       dockerfile: Dockerfile
       target: beat
+    image: valdemarbackend/myapp-beat
     env_file:
       - .env
       - .env.docker
@@ -98,6 +101,7 @@ services: # describing services we're going to use
   nginx:
     build:
       context: ./nginx  # path to the directory with Dockerfile and nginx.conf
+    image: valdemarbackend/myapp-nginx
     ports:
       - "80:80" # mapping host port with docker port
     volumes:
