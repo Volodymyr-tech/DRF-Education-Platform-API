@@ -136,18 +136,18 @@ jobs:
             docker rm $(docker ps -aq)
             docker rmi -f $(docker images -a -q)
           
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:latest
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:latest
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:latest
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:latest
           
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:latest
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:latest
             docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
             docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:${{ github.sha }}
-            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:${{ github.sha }}
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-celery:latest
+            docker run -d ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-beat:latest
           
           EOF
