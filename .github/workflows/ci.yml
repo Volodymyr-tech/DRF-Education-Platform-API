@@ -81,7 +81,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build all images using docker-compose
-        run: docker-compose build
+        run: docker compose build
 
       - name: Tag and push images
         run: |
