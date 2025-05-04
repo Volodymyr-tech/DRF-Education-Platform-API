@@ -85,13 +85,12 @@ jobs:
 
       - name: Tag and push images
         run: |
-          TAG=${{ github.sha }}
           USER=${{ secrets.DOCKER_HUB_USERNAME }}
 
-          docker push $USER/myapp-backend:$TAG
-          docker push $USER/myapp-nginx:$TAG
-          docker push $USER/myapp-celery:$TAG
-          docker push $USER/myapp-beat:$TAG
+          docker push $USER/myapp-backend
+          docker push $USER/myapp-nginx
+          docker push $USER/myapp-celery
+          docker push $USER/myapp-beat
 
       - name: Pull official Postgres & push to your Hub
         run: |
