@@ -141,7 +141,9 @@ jobs:
             cd ~/myapp/DRF-Education-Platform-API
                
             docker system prune -a --volumes -f
-            docker compose down --remove-orphans
+            docker stop $(docker ps -q)      
+            docker rm $(docker ps -aq)
+            docker rmi -f $(docker images -a -q)
           
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }}
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }}
