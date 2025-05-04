@@ -88,11 +88,6 @@ jobs:
           TAG=${{ github.sha }}
           USER=${{ secrets.DOCKER_HUB_USERNAME }}
 
-          docker tag drf-education-platform-api_web       $USER/myapp-backend:$TAG
-          docker tag drf-education-platform-api_nginx     $USER/myapp-nginx:$TAG
-          docker tag drf-education-platform-api_celery    $USER/myapp-celery:$TAG
-          docker tag drf-education-platform-api_celery_beat $USER/myapp-beat:$TAG
-
           docker push $USER/myapp-backend:$TAG
           docker push $USER/myapp-nginx:$TAG
           docker push $USER/myapp-celery:$TAG
