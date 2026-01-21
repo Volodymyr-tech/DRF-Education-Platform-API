@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VissumLex Academy - Премиальное обучение ВНЖ Испании</title>
+    <title>VissumLex Academy — Личный кабинет</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         :root {
             --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark-bg: #0a0a0a;
-            --card-bg: rgba(255, 255, 255, 0.03);
             --border-gold: rgba(191, 149, 63, 0.3);
         }
 
@@ -20,237 +19,283 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
             color: #ffffff;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         .gold-text {
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 700;
         }
+
+        .gold-border { border: 1px solid var(--border-gold); }
 
         .gold-btn {
             background: var(--gold-gradient);
+            color: black;
+            font-weight: 700;
             transition: all 0.3s ease;
-            color: #000;
-            font-weight: 600;
         }
 
         .gold-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.4);
+            box-shadow: 0 4px 20px rgba(191, 149, 63, 0.4);
         }
 
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-        }
-
+        .sidebar-item:hover { background: rgba(255, 255, 255, 0.05); }
         .sidebar-item.active {
-            background: rgba(191, 149, 63, 0.15);
+            background: rgba(191, 149, 63, 0.1);
             border-left: 3px solid #BF953F;
         }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #111;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #BF953F;
-            border-radius: 10px;
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(191, 149, 63, 0.3); border-radius: 10px; }
+
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .locked-overlay {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
         }
 
-        /* Анимация появления чата */
-        #ai-chat-window {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(20px) scale(0.95);
-            opacity: 0;
-            pointer-events: none;
+        /* Анимация FAVORABLE */
+        .favorable-badge {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            animation: float 3s ease-in-out infinite;
         }
-
-        #ai-chat-window.open {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            pointer-events: auto;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
     </style>
 </head>
-<body class="h-screen flex flex-col">
+<body class="flex h-screen">
 
-    <!-- Header -->
-    <header class="h-20 border-b border-white/5 flex items-center justify-between px-8 z-50 bg-black/50 backdrop-blur-md">
-        <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-gradient-to-tr from-yellow-700 to-yellow-200 rounded-lg flex items-center justify-center">
-                <span class="text-black font-black text-xl">V</span>
+    <!-- Боковая панель (Sidebar) -->
+    <aside class="w-64 gold-border border-y-0 border-l-0 bg-black flex flex-col z-20">
+        <div class="p-6 border-b border-white/5">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="scale" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="text-sm font-bold gold-text uppercase tracking-widest">VissumLex</span>
             </div>
-            <span class="text-2xl font-bold tracking-tighter">VissumLex <span class="gold-text uppercase text-sm tracking-[0.2em] ml-2">Academy</span></span>
         </div>
 
-        <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
-            <a href="#" onclick="showDashboard()" class="hover:text-white transition">Все курсы</a>
-            <a href="#" class="hover:text-white transition">База знаний</a>
-            <a href="#" class="hover:text-white transition">Мой прогресс</a>
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
+            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest px-4 mb-2">Навигация</div>
+            <a href="#" id="nav-dashboard" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-xl transition-all" onclick="showSection('dashboard')">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-sm font-medium">Дашборд</span>
+            </a>
+
+            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest px-4 mt-6 mb-2">Академия</div>
+            <a href="#" id="nav-courses" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all" onclick="showSection('courses')">
+                <i data-lucide="book-open" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-sm font-medium">Все курсы</span>
+            </a>
+            <a href="#" id="nav-database" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all" onclick="showSection('database')">
+                <i data-lucide="database" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-sm font-medium">База знаний</span>
+            </a>
+
+            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest px-4 mt-6 mb-2">Помощь</div>
+            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all" onclick="toggleChat(true)">
+                <i data-lucide="sparkles" class="w-5 h-5 text-indigo-400"></i>
+                <span class="text-sm font-medium">ИИ Консультант</span>
+            </a>
         </nav>
 
-        <div class="flex items-center gap-4">
-            <div class="text-right hidden sm:block">
-                <p class="text-xs text-gray-500">Студент</p>
-                <p class="text-sm font-semibold">Александр В.</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-zinc-800 border border-gold flex items-center justify-center">
-                <i data-lucide="user" class="w-5 h-5 text-gray-400"></i>
-            </div>
-        </div>
-    </header>
-
-    <main class="flex-1 flex overflow-hidden">
-        <!-- Sidebar for Course Navigation -->
-        <aside id="sidebar" class="w-80 border-r border-white/5 flex flex-col hidden lg:flex">
-            <div class="p-6 border-b border-white/5">
-                <h3 id="current-course-title" class="text-lg font-bold mb-1">Курс: ВНЖ без права на работу</h3>
-                <div class="w-full bg-zinc-900 h-1.5 rounded-full mt-4">
-                    <div class="bg-gradient-to-r from-yellow-700 to-yellow-300 h-full rounded-full" style="width: 35%"></div>
-                </div>
-                <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-widest">Прогресс: 35% завершено</p>
-            </div>
-
-            <div id="course-navigation" class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-6">
-                <!-- Modules will be injected here -->
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <section id="main-view" class="flex-1 overflow-y-auto bg-[#050505] p-6 md:p-12 relative">
-            <div id="dashboard-content" class="max-w-6xl mx-auto">
-                <div class="mb-10">
-                    <h1 class="text-4xl font-bold mb-2">Добро пожаловать в <span class="gold-text">VissumLex</span></h1>
-                    <p class="text-gray-400">Выберите направление для начала вашего пути в Испанию</p>
-                </div>
-
-                <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Course cards will be injected here -->
-                </div>
-            </div>
-
-            <div id="lesson-content" class="max-w-4xl mx-auto hidden">
-                <button onclick="showDashboard()" class="flex items-center gap-2 text-gray-500 hover:text-white mb-8 transition">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Назад к курсам
-                </button>
-
-                <div id="lesson-viewer">
-                    <!-- Lesson details will be injected here -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- AI Assistant Toggle Button -->
-    <button onclick="toggleChat()" class="fixed bottom-8 right-8 w-16 h-16 rounded-full gold-btn flex items-center justify-center shadow-2xl z-[60]">
-        <i data-lucide="sparkles" class="w-8 h-8"></i>
-    </button>
-
-    <!-- AI Chat Window -->
-    <div id="ai-chat-window" class="fixed bottom-28 right-8 w-[380px] h-[550px] glass-card shadow-2xl z-[60] flex flex-col overflow-hidden">
-        <div class="p-4 border-b border-white/10 flex items-center justify-between bg-white/5">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-yellow-600 to-yellow-200 flex items-center justify-center">
-                    <i data-lucide="bot" class="w-5 h-5 text-black"></i>
+        <!-- Профиль пользователя -->
+        <div class="p-4 border-t border-white/5">
+            <div class="flex items-center gap-3 px-2 mb-4">
+                <div class="w-10 h-10 rounded-full gold-border p-0.5 overflow-hidden bg-zinc-800 flex items-center justify-center">
+                    <i data-lucide="user" class="text-gray-400"></i>
                 </div>
                 <div>
-                    <p class="text-sm font-bold">Lex AI Ассистент</p>
-                    <p class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Онлайн</p>
+                    <p class="text-xs font-bold">{{ request.user.username|default:"Пользователь" }}</p>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-tighter">Студент VissumLex</p>
                 </div>
             </div>
-            <button onclick="toggleChat()" class="text-gray-500 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <a href="{% url 'users:token_obtain_pair' %}" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold transition-all flex items-center justify-center gap-2 text-red-400">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Выход
+            </a>
         </div>
+    </aside>
 
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-            <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-gray-300 max-w-[85%] border border-white/5">
-                Привет! Я ваш эксперт по иммиграции. Спросите меня что угодно о документах, сроках или требованиях для ВНЖ Испании.
+    <!-- Основной контент -->
+    <main class="flex-1 flex flex-col h-full bg-zinc-950 overflow-hidden relative">
+        <!-- Шапка -->
+        <header class="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-black/50 backdrop-blur-md">
+            <h2 id="section-title" class="text-lg font-bold">Дашборд</h2>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">Law Data Live 2026</span>
+                </div>
             </div>
-        </div>
+        </header>
 
-        <div class="p-4 border-t border-white/10 bg-black/20">
-            <div class="relative">
-                <input id="chat-input" type="text" placeholder="Задайте вопрос..." class="w-full bg-zinc-900 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-yellow-600 transition">
-                <button onclick="sendMessage()" class="absolute right-2 top-2 w-8 h-8 gold-btn rounded-lg flex items-center justify-center">
-                    <i data-lucide="send" class="w-4 h-4"></i>
+        <div id="content-container" class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+
+            <!-- Секция: Дашборд -->
+            <div id="section-dashboard" class="fade-in space-y-8">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-3xl font-black mb-2 italic">С возвращением, <span class="gold-text">{{ request.user.username }}</span>!</h1>
+                        <p class="text-gray-400 text-sm italic">Изучите новые гайды от адвокатов в базе знаний.</p>
+                    </div>
+                    <!-- Элемент FAVORABLE -->
+                    <div class="favorable-badge p-4 rounded-2xl shadow-2xl border border-white/20 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                            <i data-lucide="check" class="text-white w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[8px] text-slate-500 uppercase font-black tracking-widest">Status</p>
+                            <p class="text-lg font-bold text-slate-900 leading-none">FAVORABLE</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-4">
+                        <div class="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center border border-green-500/20">
+                            <i data-lucide="unlock" class="text-green-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold italic">Вводный курс: Основы ВНЖ</h3>
+                        <p class="text-sm text-gray-400">Ваш бесплатный старт. Разберитесь в типах резиденций за 30 минут.</p>
+                        <button onclick="showSection('courses')" class="text-xs font-bold text-indigo-400 underline decoration-indigo-400/30">Смотреть модули</button>
+                    </div>
+                    <div class="bg-indigo-600/10 border border-indigo-500/20 rounded-3xl p-8 space-y-4 relative overflow-hidden group">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+                            <span class="text-xs font-black uppercase text-indigo-400 tracking-widest italic">AI Insights</span>
+                        </div>
+                        <h3 class="text-xl font-bold italic">Lex AI Ассистент</h3>
+                        <p class="text-sm text-gray-300">"Согласно вашему профилю, пора готовить справку о несудимости."</p>
+                        <button onclick="toggleChat(true)" class="w-full py-3 bg-indigo-600 text-white rounded-xl text-xs font-bold transition-transform group-hover:scale-[1.02]">Задать вопрос</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секция: Все курсы -->
+            <div id="section-courses" class="hidden fade-in space-y-6">
+                <div>
+                    <h1 class="text-2xl font-black italic gold-text">Все курсы платформы</h1>
+                    <p class="text-gray-500 text-sm italic">Используйте фильтры для поиска нужного типа ВНЖ.</p>
+                </div>
+                <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Заполняется динамически из JS -->
+                </div>
+            </div>
+
+            <!-- Секция: База знаний -->
+            <div id="section-database" class="hidden fade-in space-y-8">
+                <h1 class="text-2xl font-black italic gold-text">Библиотека документов и гайдов</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-8 bg-white/5 rounded-[32px] border border-white/5 hover:border-indigo-500/30 transition-all cursor-pointer group">
+                        <div class="w-12 h-12 bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="file-check"></i>
+                        </div>
+                        <h5 class="font-bold text-lg mb-2">Шаблоны анкет</h5>
+                        <p class="text-xs text-gray-500 leading-relaxed">Формы EX-01, EX-11 и инструкции по заполнению 790 квитанций.</p>
+                    </div>
+                    <div class="p-8 bg-white/5 rounded-[32px] border border-white/5 hover:border-yellow-500/30 transition-all cursor-pointer group">
+                        <div class="w-12 h-12 bg-yellow-500/20 rounded-2xl flex items-center justify-center text-yellow-500 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="gavel"></i>
+                        </div>
+                        <h5 class="font-bold text-lg mb-2">Советы адвокатов</h5>
+                        <p class="text-xs text-gray-500 leading-relaxed">Практические разборы отказов и нюансы подачи в 2026 году.</p>
+                    </div>
+                    <div class="p-8 bg-white/5 rounded-[32px] border border-white/5 hover:border-green-500/30 transition-all cursor-pointer group">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-2xl flex items-center justify-center text-green-500 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="book"></i>
+                        </div>
+                        <h5 class="font-bold text-lg mb-2">Гайды по городам</h5>
+                        <p class="text-xs text-gray-500 leading-relaxed">Особенности прописки и ситы в Мадриде, Барселоне и Валенсии.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секция: Просмотр урока -->
+            <div id="section-lesson" class="hidden fade-in space-y-8 max-w-4xl mx-auto pb-20">
+                <button onclick="showSection('courses')" class="flex items-center gap-2 text-gray-500 hover:text-white transition text-[10px] font-bold uppercase tracking-widest">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Назад к библиотеке
                 </button>
+                <div id="lesson-content"></div>
             </div>
+        </div>
+
+        <!-- AI Ассистент (Плавающее окно) -->
+        <div id="ai-chat" class="absolute bottom-6 right-6 w-96 bg-black border border-white/10 rounded-[32px] shadow-2xl overflow-hidden flex flex-col z-30 transition-all opacity-0 pointer-events-none scale-95 translate-y-4">
+            <div class="p-4 bg-indigo-600 flex justify-between items-center cursor-pointer" onclick="toggleChat(false)">
+                <div class="flex items-center gap-3 text-white">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span class="text-[10px] font-black uppercase tracking-widest italic">VissumLex Intelligence</span>
+                </div>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-white"></i>
+            </div>
+            <div class="h-[400px] flex flex-col bg-zinc-950">
+                <div id="messages" class="flex-1 p-4 space-y-4 overflow-y-auto custom-scrollbar flex flex-col">
+                    <div class="bg-white/5 p-4 rounded-2xl rounded-tl-none text-[11px] text-gray-300 max-w-[85%] border border-white/5">
+                        {{ request.user.username }}, готов помочь с вопросами по ВНЖ. Опишите вашу ситуацию.
+                    </div>
+                </div>
+                <div class="p-4 border-t border-white/5 bg-black flex gap-2">
+                    <input id="chat-input" type="text" placeholder="Ваш вопрос..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-500 text-white">
+                    <button onclick="sendMessage()" class="p-3 bg-indigo-600 rounded-xl hover:bg-indigo-500 transition-all text-white">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Окно оплаты (Subscription Modal) -->
+    <div id="payment-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-black/80 backdrop-blur-md">
+        <div class="bg-zinc-900 border gold-border rounded-[40px] p-10 max-w-md w-full text-center space-y-6 fade-in shadow-2xl">
+            <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto border border-yellow-500/20">
+                <i data-lucide="lock" class="text-yellow-600 w-8 h-8"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold italic mb-2">Доступ закрыт</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Этот курс доступен только по подписке «Платформа». Оформите доступ на 3 месяца, чтобы разблокировать все материалы и ИИ.</p>
+            </div>
+            <div class="p-5 bg-white/5 rounded-2xl border border-white/5">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1 font-bold">Тариф на 3 месяца</p>
+                <p class="text-3xl font-black gold-text italic">€229</p>
+            </div>
+            <a href="{% url 'users:payments_create' %}" class="block w-full py-5 gold-btn rounded-2xl text-lg shadow-2xl text-center">Купить доступ</a>
+            <button onclick="closePayment()" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest hover:text-white transition">Вернуться позже</button>
         </div>
     </div>
 
     <script>
-        // --- Mock Data ---
-        const defaultCourses = [
-            {
-                id: 'nlv',
-                title: 'No Lucrativa (ВНЖ без права на работу)',
-                description: 'Полный гайд по получению визы D и TIE для финансово независимых лиц.',
-                image: 'https://images.unsplash.com/photo-1543783232-af9942f4a472?auto=format&fit=crop&q=80&w=800',
-                modules: [
-                    {
-                        title: 'Подготовка и стратегия',
-                        lessons: [
-                            { id: 'l1', title: 'Чек-лист документов 2024', content: 'Основные требования консульства...', duration: '15 мин' },
-                            { id: 'l2', title: 'Расчет пассивного дохода (IPREM)', content: 'Как правильно рассчитать сумму на счету...', duration: '20 мин' }
-                        ]
-                    },
-                    {
-                        title: 'Финансы и банки',
-                        lessons: [
-                            { id: 'l3', title: 'Открытие счета в Испании удаленно', content: 'Обзор банков BBVA, Santander, Sabadell...', duration: '25 мин' },
-                            { id: 'l4', title: 'Требования к справкам из банка', content: 'Перевод, апостиль и сроки...', duration: '10 мин' }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'digital-nomad',
-                title: 'Цифровой Кочевник (Digital Nomad)',
-                description: 'Для удаленных сотрудников и фрилансеров с доходом из-за пределов Испании.',
-                image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800',
-                modules: [
-                    {
-                        title: 'Юридические аспекты',
-                        lessons: [
-                            { id: 'dn1', title: 'Договор с работодателем', content: 'Нюансы для кочевников...', duration: '12 мин' }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'student',
-                title: 'Учебная Виза (Estancia por Estudios)',
-                description: 'Языковые курсы, магистратура и право на работу до 30 часов в неделю.',
-                image: 'https://images.unsplash.com/photo-1523050338692-7b835a07973f?auto=format&fit=crop&q=80&w=800',
-                modules: []
-            }
-        ];
-
-        const serverCourses = [
+        /** * Прямая интеграция с Django-моделями
+         * Проверка подписки идет через список ID курсов, переданных из View
+         */
+        const allCourses = [
             {% for course in courses %}
             {
-                id: '{{ course.id }}',
-                title: '{{ course.title|escapejs }}',
-                description: '{{ course.description|escapejs }}',
-                image: '{% if course.preview %}{{ course.preview.url }}{% else %}https://images.unsplash.com/photo-1543783232-af9942f4a472?auto=format&fit=crop&q=80&w=800{% endif %}',
+                id: {{ course.id }},
+                title: "{{ course.title|escapejs }}",
+                description: "{{ course.description|escapejs }}",
+                is_subscribed: {% if "Вводный" in course.title %}true{% elif course.id in user_subscriptions_ids %}true{% else %}false{% endif %},
+                is_free: {% if "Вводный" in course.title %}true{% else %}false{% endif %},
                 modules: [
                     {% for module in course.modules.all %}
                     {
-                        title: '{{ module.title|escapejs }}',
+                        title: "{{ module.title|escapejs }}",
+                        description: "{{ module.description|escapejs }}",
                         lessons: [
                             {% for lesson in module.lessons.all %}
                             {
-                                id: '{{ lesson.id }}',
-                                title: '{{ lesson.title|escapejs }}',
-                                content: '{{ lesson.description|escapejs }}',
-                                duration: '15 мин'
+                                id: {{ lesson.id }},
+                                title: "{{ lesson.title|escapejs }}",
+                                desc: "{{ lesson.description|escapejs }}",
+                                video: "{{ lesson.video_link|escapejs }}"
                             },
                             {% endfor %}
                         ]
@@ -261,196 +306,169 @@
             {% endfor %}
         ];
 
-        const courses = serverCourses.length > 0 ? serverCourses : defaultCourses;
-
-        let currentActiveCourse = null;
-
-        // --- Core Functions ---
-
         function init() {
             lucide.createIcons();
-            renderCourseGrid();
+            renderCourses();
         }
 
-        function renderCourseGrid() {
-            const grid = document.getElementById('course-grid');
-            grid.innerHTML = courses.map(course => `
-                <div class="glass-card overflow-hidden group hover:border-yellow-600/50 transition-all duration-500 cursor-pointer" onclick="openCourse('${course.id}')">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="${course.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="${course.title}">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                        <div class="absolute bottom-4 left-4">
-                            <span class="text-[10px] bg-yellow-600 text-black px-2 py-1 rounded font-bold uppercase tracking-tighter">Premium</span>
+        // Вывод списка курсов
+        function renderCourses() {
+            const grid = document.getElementById('courses-grid');
+            grid.innerHTML = allCourses.map(course => `
+                <div onclick="openCourse(${course.id})" class="group bg-white/5 border ${course.is_subscribed ? 'border-white/5' : 'border-yellow-600/20'} rounded-[32px] p-6 space-y-4 hover:border-indigo-500 transition-all cursor-pointer relative overflow-hidden">
+                    ${!course.is_subscribed ? `
+                        <div class="absolute inset-0 locked-overlay flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                            <i data-lucide="lock" class="w-8 h-8 text-yellow-500 mb-2"></i>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-yellow-500">Разблокировать</span>
                         </div>
+                    ` : ''}
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 ${course.is_subscribed ? 'bg-indigo-600/20 text-indigo-400' : 'bg-zinc-800 text-gray-500'} rounded-2xl flex items-center justify-center">
+                            <i data-lucide="${course.is_subscribed ? 'play' : 'lock'}"></i>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest ${course.is_free ? 'text-green-500' : (course.is_subscribed ? 'text-indigo-400' : 'text-gray-500')} italic">
+                            ${course.is_free ? 'Бесплатно' : (course.is_subscribed ? 'Доступно' : 'Премиум')}
+                        </span>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2 group-hover:gold-text transition-colors">${course.title}</h3>
-                        <p class="text-gray-400 text-sm mb-6 line-clamp-2">${course.description}</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500 flex items-center gap-1"><i data-lucide="book-open" class="w-3 h-3"></i> ${course.modules.length} Модулей</span>
-                            <button class="gold-text text-sm flex items-center gap-1">Начать <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
-                        </div>
+                    <div>
+                        <h4 class="font-bold text-lg leading-tight ${course.is_subscribed ? 'text-white' : 'text-gray-400'}">${course.title}</h4>
+                        <p class="text-[11px] text-gray-500 mt-2 line-clamp-2 italic">${course.description}</p>
                     </div>
                 </div>
             `).join('');
             lucide.createIcons();
         }
 
-        function openCourse(courseId) {
-            const course = courses.find(c => c.id === courseId);
-            currentActiveCourse = course;
-
-            document.getElementById('dashboard-content').classList.add('hidden');
-            document.getElementById('lesson-content').classList.remove('hidden');
-            document.getElementById('sidebar').classList.remove('hidden');
-
-            document.getElementById('current-course-title').innerText = course.title;
-            renderSidebar(course);
-
-            // Open first lesson by default if exists
-            if (course.modules.length > 0 && course.modules[0].lessons.length > 0) {
-                renderLesson(course.modules[0].lessons[0]);
+        function openCourse(id) {
+            const course = allCourses.find(c => c.id === id);
+            if (!course.is_subscribed) {
+                const modal = document.getElementById('payment-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                return;
             }
+
+            showSection('lesson');
+            renderLessonView(course);
         }
 
-        function renderSidebar(course) {
-            const nav = document.getElementById('course-navigation');
-            nav.innerHTML = course.modules.map((mod, modIdx) => `
-                <div>
-                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Модуль ${modIdx + 1}: ${mod.title}</h4>
-                    <div class="space-y-1">
-                        ${mod.lessons.map(lesson => `
-                            <button onclick="renderLessonById('${lesson.id}')" id="btn-${lesson.id}" class="sidebar-item w-full text-left p-3 rounded-lg text-sm flex items-center justify-between hover:bg-white/5 transition">
-                                <span class="flex items-center gap-2">
-                                    <i data-lucide="play-circle" class="w-4 h-4 text-yellow-600"></i>
-                                    ${lesson.title}
-                                </span>
-                                <span class="text-[10px] text-gray-600">${lesson.duration}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        function renderLessonById(lessonId) {
-            for (const mod of currentActiveCourse.modules) {
-                const lesson = mod.lessons.find(l => l.id === lessonId);
-                if (lesson) {
-                    renderLesson(lesson);
-                    break;
-                }
+        function renderLessonView(course, selectedLesson = null) {
+            // Если уроки есть, по умолчанию выбираем первый из первого модуля
+            if (!selectedLesson && course.modules.length > 0 && course.modules[0].lessons.length > 0) {
+                selectedLesson = course.modules[0].lessons[0];
             }
-        }
 
-        function renderLesson(lesson) {
-            // Update UI Active State
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            const activeBtn = document.getElementById(`btn-${lesson.id}`);
-            if (activeBtn) activeBtn.classList.add('active');
-
-            const viewer = document.getElementById('lesson-viewer');
-            viewer.innerHTML = `
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold mb-4">${lesson.title}</h1>
-                    <div class="aspect-video bg-zinc-900 rounded-2xl border border-white/5 flex items-center justify-center relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1583422409516-291507467396?auto=format&fit=crop&q=80&w=1200')] bg-cover opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                        <button class="w-20 h-20 rounded-full gold-btn flex items-center justify-center relative z-10">
-                            <i data-lucide="play" class="w-8 h-8 ml-1"></i>
-                        </button>
+            const lessonContent = document.getElementById('lesson-content');
+            lessonContent.innerHTML = `
+                <div class="space-y-8">
+                    <div class="flex flex-col gap-2">
+                        <h1 class="text-4xl font-black italic gold-text">${course.title}</h1>
+                        <p class="text-gray-500 text-sm italic">${selectedLesson ? 'Урок: ' + selectedLesson.title : course.description}</p>
                     </div>
-                </div>
 
-                <div class="glass-card p-8 prose prose-invert max-w-none">
-                    <h3 class="text-xl font-bold mb-4 gold-text">Описание урока</h3>
-                    <p class="text-gray-300 leading-relaxed mb-6">
-
-                        ${lesson.content}
-
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center gap-4">
-                            <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center">
-                                <i data-lucide="file-text" class="w-5 h-5 text-yellow-600"></i>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                        <!-- Основная область урока -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="aspect-video bg-black rounded-[32px] border border-white/5 flex items-center justify-center relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-indigo-900/20 to-transparent"></div>
+                                ${selectedLesson && selectedLesson.video
+                                    ? `<iframe class="w-full h-full rounded-[32px] relative z-10" src="${selectedLesson.video}" frameborder="0" allowfullscreen></iframe>`
+                                    : `<i data-lucide="play-circle" class="w-24 h-24 text-indigo-500 cursor-pointer group-hover:scale-110 transition-transform relative z-10 shadow-2xl"></i>`
+                                }
                             </div>
-                            <div>
-                                <p class="text-sm font-bold">Список документов.pdf</p>
-                                <p class="text-[10px] text-gray-500">2.4 MB • Нажмите чтобы скачать</p>
+                            <div class="bg-white/5 p-8 rounded-[40px] border border-white/5 space-y-4">
+                                <h3 class="text-xl font-bold italic">${selectedLesson ? selectedLesson.title : 'О модуле'}</h3>
+                                <p class="text-gray-400 leading-relaxed text-sm">${selectedLesson ? selectedLesson.desc : course.description}</p>
                             </div>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center gap-4">
-                            <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center">
-                                <i data-lucide="link" class="w-5 h-5 text-yellow-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold">Запись в консульство</p>
-                                <p class="text-[10px] text-gray-500">Внешняя ссылка</p>
+
+                        <!-- Плейлист модулей и уроков -->
+                        <div class="space-y-6">
+                            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-500">Программа обучения</h3>
+                            <div class="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
+                                ${course.modules.map((module, mIdx) => `
+                                    <div class="space-y-2">
+                                        <div class="flex items-center gap-2 px-2">
+                                            <span class="text-[10px] font-black text-indigo-500">М${mIdx + 1}</span>
+                                            <h4 class="text-xs font-bold text-gray-300 uppercase truncate">${module.title}</h4>
+                                        </div>
+                                        <div class="space-y-1">
+                                            ${module.lessons.map(lesson => `
+                                                <div
+                                                    onclick="selectLesson(${course.id}, ${lesson.id})"
+                                                    class="p-4 rounded-2xl border ${selectedLesson && selectedLesson.id === lesson.id ? 'bg-indigo-600/10 border-indigo-500/50' : 'bg-white/5 border-white/5 hover:border-white/10'} cursor-pointer transition-all flex items-center gap-3"
+                                                >
+                                                    <i data-lucide="${selectedLesson && selectedLesson.id === lesson.id ? 'play' : 'circle'}" class="w-3 h-3 ${selectedLesson && selectedLesson.id === lesson.id ? 'text-indigo-400' : 'text-gray-600'}"></i>
+                                                    <span class="text-xs font-medium ${selectedLesson && selectedLesson.id === lesson.id ? 'text-white' : 'text-gray-400'}">${lesson.title}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="flex justify-between mt-10">
-                    <button class="px-6 py-3 border border-white/10 rounded-xl text-sm font-medium hover:bg-white/5 transition flex items-center gap-2">
-                        <i data-lucide="chevron-left" class="w-4 h-4"></i> Предыдущий
-                    </button>
-                    <button class="px-6 py-3 gold-btn rounded-xl text-sm flex items-center gap-2">
-                        Следующий урок <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                    </button>
                 </div>
             `;
             lucide.createIcons();
         }
 
-        function showDashboard() {
-            document.getElementById('dashboard-content').classList.remove('hidden');
-            document.getElementById('lesson-content').classList.add('hidden');
-            document.getElementById('sidebar').classList.add('hidden');
+        // Переключение урока внутри курса
+        function selectLesson(courseId, lessonId) {
+            const course = allCourses.find(c => c.id === courseId);
+            let lesson = null;
+            course.modules.forEach(m => {
+                const found = m.lessons.find(l => l.id === lessonId);
+                if (found) lesson = found;
+            });
+            renderLessonView(course, lesson);
         }
 
-        // --- AI Chat Logic ---
+        function showSection(id) {
+            document.querySelectorAll('#content-container > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById('section-' + id).classList.remove('hidden');
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('nav-' + id)?.classList.add('active');
+            const titles = { 'dashboard': 'Дашборд', 'courses': 'Библиотека курсов', 'database': 'База знаний', 'lesson': 'Обучение' };
+            document.getElementById('section-title').innerText = titles[id] || 'VissumLex';
+        }
 
-        function toggleChat() {
-            const chat = document.getElementById('ai-chat-window');
-            chat.classList.toggle('open');
+        function toggleChat(open) {
+            const chat = document.getElementById('ai-chat');
+            if (open) {
+                chat.classList.remove('opacity-0', 'pointer-events-none', 'scale-95', 'translate-y-4');
+                chat.classList.add('opacity-100', 'pointer-events-auto', 'scale-100', 'translate-y-0');
+            } else {
+                chat.classList.add('opacity-0', 'pointer-events-none', 'scale-95', 'translate-y-4');
+            }
+        }
+
+        function closePayment() {
+            const modal = document.getElementById('payment-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function sendMessage() {
             const input = document.getElementById('chat-input');
-            const messages = document.getElementById('chat-messages');
-            const text = input.value.trim();
+            const messages = document.getElementById('messages');
+            if (!input.value.trim()) return;
 
-            if (!text) return;
-
-            // User message
             const userMsg = document.createElement('div');
-            userMsg.className = "bg-zinc-800 p-3 rounded-2xl rounded-tr-none text-sm text-white self-end ml-auto max-w-[85%]";
-            userMsg.innerText = text;
+            userMsg.className = "bg-indigo-600 p-3 rounded-2xl rounded-tr-none text-[11px] text-white self-end ml-auto max-w-[85%] border border-white/5";
+            userMsg.innerText = input.value;
             messages.appendChild(userMsg);
-
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
 
-            // Simulated AI Response
             setTimeout(() => {
                 const aiMsg = document.createElement('div');
-                aiMsg.className = "bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-gray-300 max-w-[85%] border border-white/5";
-
-                let response = "Интересный вопрос! Согласно регламенту Испании, для этого типа ВНЖ вам потребуется предоставить справку о несудимости с апостилем за последние 5 лет.";
-                if (text.toLowerCase().includes('счет')) response = "Для открытия счета в Испании сейчас лучше всего подходят банки Sabadell или онлайн-банки вроде Revolut (но с испанским IBAN).";
-
-                aiMsg.innerText = response;
+                aiMsg.className = "bg-white/5 p-3 rounded-2xl rounded-tl-none text-[11px] text-gray-300 max-w-[85%] border border-white/5";
+                aiMsg.innerText = "Изучаю базу данных VissumLex... Согласно законодательству 2026 года, ваша ситуация требует подачи через Mercurio. Инструкция в Базе Знаний.";
                 messages.appendChild(aiMsg);
                 messages.scrollTop = messages.scrollHeight;
-            }, 1000);
+            }, 800);
         }
-
-        // Handle Enter key in chat
-        document.getElementById('chat-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
 
         window.onload = init;
     </script>

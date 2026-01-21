@@ -81,6 +81,7 @@ class SPAView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         courses = Course.objects.prefetch_related('modules__lessons').all()
+        context['user_subscriptions_ids'] = list(self.request.user.subscriptions.values_list('course_id', flat=True))
         context['courses'] = courses
         return context
 
