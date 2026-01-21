@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VissumLex Academy - Премиальное обучение ВНЖ Испании</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark-bg: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-gold: rgba(191, 149, 63, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .gold-text {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .gold-btn {
+            background: var(--gold-gradient);
+            transition: all 0.3s ease;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .gold-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.4);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+        }
+
+        .sidebar-item.active {
+            background: rgba(191, 149, 63, 0.15);
+            border-left: 3px solid #BF953F;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #BF953F;
+            border-radius: 10px;
+        }
+
+        /* Анимация появления чата */
+        #ai-chat-window {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #ai-chat-window.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="h-20 border-b border-white/5 flex items-center justify-between px-8 z-50 bg-black/50 backdrop-blur-md">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-gradient-to-tr from-yellow-700 to-yellow-200 rounded-lg flex items-center justify-center">
+                <span class="text-black font-black text-xl">V</span>
+            </div>
+            <span class="text-2xl font-bold tracking-tighter">VissumLex <span class="gold-text uppercase text-sm tracking-[0.2em] ml-2">Academy</span></span>
+        </div>
+
+        <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
+            <a href="#" onclick="showDashboard()" class="hover:text-white transition">Все курсы</a>
+            <a href="#" class="hover:text-white transition">База знаний</a>
+            <a href="#" class="hover:text-white transition">Мой прогресс</a>
+        </nav>
+
+        <div class="flex items-center gap-4">
+            <div class="text-right hidden sm:block">
+                <p class="text-xs text-gray-500">Студент</p>
+                <p class="text-sm font-semibold">Александр В.</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-zinc-800 border border-gold flex items-center justify-center">
+                <i data-lucide="user" class="w-5 h-5 text-gray-400"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        <!-- Sidebar for Course Navigation -->
+        <aside id="sidebar" class="w-80 border-r border-white/5 flex flex-col hidden lg:flex">
+            <div class="p-6 border-b border-white/5">
+                <h3 id="current-course-title" class="text-lg font-bold mb-1">Курс: ВНЖ без права на работу</h3>
+                <div class="w-full bg-zinc-900 h-1.5 rounded-full mt-4">
+                    <div class="bg-gradient-to-r from-yellow-700 to-yellow-300 h-full rounded-full" style="width: 35%"></div>
+                </div>
+                <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-widest">Прогресс: 35% завершено</p>
+            </div>
+
+            <div id="course-navigation" class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-6">
+                <!-- Modules will be injected here -->
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <section id="main-view" class="flex-1 overflow-y-auto bg-[#050505] p-6 md:p-12 relative">
+            <div id="dashboard-content" class="max-w-6xl mx-auto">
+                <div class="mb-10">
+                    <h1 class="text-4xl font-bold mb-2">Добро пожаловать в <span class="gold-text">VissumLex</span></h1>
+                    <p class="text-gray-400">Выберите направление для начала вашего пути в Испанию</p>
+                </div>
+
+                <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Course cards will be injected here -->
+                </div>
+            </div>
+
+            <div id="lesson-content" class="max-w-4xl mx-auto hidden">
+                <button onclick="showDashboard()" class="flex items-center gap-2 text-gray-500 hover:text-white mb-8 transition">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Назад к курсам
+                </button>
+
+                <div id="lesson-viewer">
+                    <!-- Lesson details will be injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI Assistant Toggle Button -->
+    <button onclick="toggleChat()" class="fixed bottom-8 right-8 w-16 h-16 rounded-full gold-btn flex items-center justify-center shadow-2xl z-[60]">
+        <i data-lucide="sparkles" class="w-8 h-8"></i>
+    </button>
+
+    <!-- AI Chat Window -->
+    <div id="ai-chat-window" class="fixed bottom-28 right-8 w-[380px] h-[550px] glass-card shadow-2xl z-[60] flex flex-col overflow-hidden">
+        <div class="p-4 border-b border-white/10 flex items-center justify-between bg-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-yellow-600 to-yellow-200 flex items-center justify-center">
+                    <i data-lucide="bot" class="w-5 h-5 text-black"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold">Lex AI Ассистент</p>
+                    <p class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Онлайн</p>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="text-gray-500 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+            <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-gray-300 max-w-[85%] border border-white/5">
+                Привет! Я ваш эксперт по иммиграции. Спросите меня что угодно о документах, сроках или требованиях для ВНЖ Испании.
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-white/10 bg-black/20">
+            <div class="relative">
+                <input id="chat-input" type="text" placeholder="Задайте вопрос..." class="w-full bg-zinc-900 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-yellow-600 transition">
+                <button onclick="sendMessage()" class="absolute right-2 top-2 w-8 h-8 gold-btn rounded-lg flex items-center justify-center">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Mock Data ---
+        const defaultCourses = [
+            {
+                id: 'nlv',
+                title: 'No Lucrativa (ВНЖ без права на работу)',
+                description: 'Полный гайд по получению визы D и TIE для финансово независимых лиц.',
+                image: 'https://images.unsplash.com/photo-1543783232-af9942f4a472?auto=format&fit=crop&q=80&w=800',
+                modules: [
+                    {
+                        title: 'Подготовка и стратегия',
+                        lessons: [
+                            { id: 'l1', title: 'Чек-лист документов 2024', content: 'Основные требования консульства...', duration: '15 мин' },
+                            { id: 'l2', title: 'Расчет пассивного дохода (IPREM)', content: 'Как правильно рассчитать сумму на счету...', duration: '20 мин' }
+                        ]
+                    },
+                    {
+                        title: 'Финансы и банки',
+                        lessons: [
+                            { id: 'l3', title: 'Открытие счета в Испании удаленно', content: 'Обзор банков BBVA, Santander, Sabadell...', duration: '25 мин' },
+                            { id: 'l4', title: 'Требования к справкам из банка', content: 'Перевод, апостиль и сроки...', duration: '10 мин' }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'digital-nomad',
+                title: 'Цифровой Кочевник (Digital Nomad)',
+                description: 'Для удаленных сотрудников и фрилансеров с доходом из-за пределов Испании.',
+                image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800',
+                modules: [
+                    {
+                        title: 'Юридические аспекты',
+                        lessons: [
+                            { id: 'dn1', title: 'Договор с работодателем', content: 'Нюансы для кочевников...', duration: '12 мин' }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'student',
+                title: 'Учебная Виза (Estancia por Estudios)',
+                description: 'Языковые курсы, магистратура и право на работу до 30 часов в неделю.',
+                image: 'https://images.unsplash.com/photo-1523050338692-7b835a07973f?auto=format&fit=crop&q=80&w=800',
+                modules: []
+            }
+        ];
+
+        const serverCourses = [
+            {% for course in courses %}
+            {
+                id: '{{ course.id }}',
+                title: '{{ course.title|escapejs }}',
+                description: '{{ course.description|escapejs }}',
+                image: '{% if course.preview %}{{ course.preview.url }}{% else %}https://images.unsplash.com/photo-1543783232-af9942f4a472?auto=format&fit=crop&q=80&w=800{% endif %}',
+                modules: [
+                    {% for module in course.modules.all %}
+                    {
+                        title: '{{ module.title|escapejs }}',
+                        lessons: [
+                            {% for lesson in module.lessons.all %}
+                            {
+                                id: '{{ lesson.id }}',
+                                title: '{{ lesson.title|escapejs }}',
+                                content: '{{ lesson.description|escapejs }}',
+                                duration: '15 мин'
+                            },
+                            {% endfor %}
+                        ]
+                    },
+                    {% endfor %}
+                ]
+            },
+            {% endfor %}
+        ];
+
+        const courses = serverCourses.length > 0 ? serverCourses : defaultCourses;
+
+        let currentActiveCourse = null;
+
+        // --- Core Functions ---
+
+        function init() {
+            lucide.createIcons();
+            renderCourseGrid();
+        }
+
+        function renderCourseGrid() {
+            const grid = document.getElementById('course-grid');
+            grid.innerHTML = courses.map(course => `
+                <div class="glass-card overflow-hidden group hover:border-yellow-600/50 transition-all duration-500 cursor-pointer" onclick="openCourse('${course.id}')">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="${course.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="${course.title}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="text-[10px] bg-yellow-600 text-black px-2 py-1 rounded font-bold uppercase tracking-tighter">Premium</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 group-hover:gold-text transition-colors">${course.title}</h3>
+                        <p class="text-gray-400 text-sm mb-6 line-clamp-2">${course.description}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500 flex items-center gap-1"><i data-lucide="book-open" class="w-3 h-3"></i> ${course.modules.length} Модулей</span>
+                            <button class="gold-text text-sm flex items-center gap-1">Начать <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openCourse(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            currentActiveCourse = course;
+
+            document.getElementById('dashboard-content').classList.add('hidden');
+            document.getElementById('lesson-content').classList.remove('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
+
+            document.getElementById('current-course-title').innerText = course.title;
+            renderSidebar(course);
+
+            // Open first lesson by default if exists
+            if (course.modules.length > 0 && course.modules[0].lessons.length > 0) {
+                renderLesson(course.modules[0].lessons[0]);
+            }
+        }
+
+        function renderSidebar(course) {
+            const nav = document.getElementById('course-navigation');
+            nav.innerHTML = course.modules.map((mod, modIdx) => `
+                <div>
+                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Модуль ${modIdx + 1}: ${mod.title}</h4>
+                    <div class="space-y-1">
+                        ${mod.lessons.map(lesson => `
+                            <button onclick="renderLessonById('${lesson.id}')" id="btn-${lesson.id}" class="sidebar-item w-full text-left p-3 rounded-lg text-sm flex items-center justify-between hover:bg-white/5 transition">
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="play-circle" class="w-4 h-4 text-yellow-600"></i>
+                                    ${lesson.title}
+                                </span>
+                                <span class="text-[10px] text-gray-600">${lesson.duration}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderLessonById(lessonId) {
+            for (const mod of currentActiveCourse.modules) {
+                const lesson = mod.lessons.find(l => l.id === lessonId);
+                if (lesson) {
+                    renderLesson(lesson);
+                    break;
+                }
+            }
+        }
+
+        function renderLesson(lesson) {
+            // Update UI Active State
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${lesson.id}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const viewer = document.getElementById('lesson-viewer');
+            viewer.innerHTML = `
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold mb-4">${lesson.title}</h1>
+                    <div class="aspect-video bg-zinc-900 rounded-2xl border border-white/5 flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1583422409516-291507467396?auto=format&fit=crop&q=80&w=1200')] bg-cover opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <button class="w-20 h-20 rounded-full gold-btn flex items-center justify-center relative z-10">
+                            <i data-lucide="play" class="w-8 h-8 ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 prose prose-invert max-w-none">
+                    <h3 class="text-xl font-bold mb-4 gold-text">Описание урока</h3>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+
+                        ${lesson.content}
+
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                            <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Список документов.pdf</p>
+                                <p class="text-[10px] text-gray-500">2.4 MB • Нажмите чтобы скачать</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                            <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center">
+                                <i data-lucide="link" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Запись в консульство</p>
+                                <p class="text-[10px] text-gray-500">Внешняя ссылка</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-10">
+                    <button class="px-6 py-3 border border-white/10 rounded-xl text-sm font-medium hover:bg-white/5 transition flex items-center gap-2">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i> Предыдущий
+                    </button>
+                    <button class="px-6 py-3 gold-btn rounded-xl text-sm flex items-center gap-2">
+                        Следующий урок <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function showDashboard() {
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('lesson-content').classList.add('hidden');
+            document.getElementById('sidebar').classList.add('hidden');
+        }
+
+        // --- AI Chat Logic ---
+
+        function toggleChat() {
+            const chat = document.getElementById('ai-chat-window');
+            chat.classList.toggle('open');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            // User message
+            const userMsg = document.createElement('div');
+            userMsg.className = "bg-zinc-800 p-3 rounded-2xl rounded-tr-none text-sm text-white self-end ml-auto max-w-[85%]";
+            userMsg.innerText = text;
+            messages.appendChild(userMsg);
+
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+
+            // Simulated AI Response
+            setTimeout(() => {
+                const aiMsg = document.createElement('div');
+                aiMsg.className = "bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-gray-300 max-w-[85%] border border-white/5";
+
+                let response = "Интересный вопрос! Согласно регламенту Испании, для этого типа ВНЖ вам потребуется предоставить справку о несудимости с апостилем за последние 5 лет.";
+                if (text.toLowerCase().includes('счет')) response = "Для открытия счета в Испании сейчас лучше всего подходят банки Sabadell или онлайн-банки вроде Revolut (но с испанским IBAN).";
+
+                aiMsg.innerText = response;
+                messages.appendChild(aiMsg);
+                messages.scrollTop = messages.scrollHeight;
+            }, 1000);
+        }
+
+        // Handle Enter key in chat
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        window.onload = init;
+    </script>
+</body>
+</html>

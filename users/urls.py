@@ -8,6 +8,8 @@ from .views import (
     PaymentsListAPIView,
     RegisterView,
     UserProfileViewSet,
+    SPAView,
+    LandingPageView,
 )
 
 router = DefaultRouter()
@@ -26,4 +28,6 @@ urlpatterns = [
         name="token_obtain_pair",
     ),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("spa/", SPAView.as_view(), name="spa"),
+    path("landing/", LandingPageView.as_view(), name="landing"),
 ]

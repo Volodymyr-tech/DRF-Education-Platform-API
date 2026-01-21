@@ -28,9 +28,23 @@ class Course(models.Model):
         return self.title
 
 
+class Module(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    course = models.ForeignKey(
+        Course, related_name="modules", on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"{self.title} ({self.course.title})"
+
+
 class Lesson(models.Model):
     course = models.ForeignKey(
         Course, related_name="lessons", on_delete=models.SET_NULL, blank=True, null=True
+    )
+    module = models.ForeignKey(
+        Module, related_name="lessons", on_delete=models.SET_NULL, blank=True, null=True
     )
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)

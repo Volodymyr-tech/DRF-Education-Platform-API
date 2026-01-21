@@ -2,6 +2,8 @@ from rest_framework import generics, viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from django.views.generic import TemplateView
+from materials.models import Course
 
 from .models import CustomUser, Payments
 from .serializers import PaymentSerializer, RegisterSerializer, UserProfileSerializer
@@ -71,3 +73,17 @@ class PaymentsCreateAPIView(generics.CreateAPIView):
         )
         payment.link = stripe_session.url
         payment.save()
+
+
+class SPAView(TemplateView):
+    template_name = "single-page-applicaion.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        courses = Course.objects.prefetch_related('modules__lessons').all()
+        context['courses'] = courses
+        return context
+
+
+class LandingPageView(TemplateView):
+    template_name = "landing-page.html"

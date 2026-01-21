@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from materials.models import Course, Lesson, Subscription
+from materials.models import Course, Lesson, Subscription, Module
 
 
 # Register your models here.
@@ -14,6 +14,15 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "course",
+        "description",
+    )
+
+
+@admin.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "course",
