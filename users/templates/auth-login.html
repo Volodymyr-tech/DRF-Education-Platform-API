@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VissumLex | Вход в систему</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Inter:wght@300;600;900&display=swap');
+
+        :root {
+            --gold: #D4AF37;
+            --dark: #050505;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .font-unbounded { font-family: 'Unbounded', sans-serif; }
+
+        /* Золотой градиент как в лендинге */
+        .gold-gradient {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(170, 119, 28, 0.05) 0px, transparent 50%);
+            z-index: -1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-gold {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .input-gold:focus {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #BF953F, #FCF6BA, #AA771C);
+            background-size: 200% auto;
+            color: black;
+            font-weight: 900;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(191, 149, 63, 0.4);
+        }
+
+        /* Переключение форм */
+        .form-container {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hidden-form {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .active-form {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tab-active {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+
+    <div class="w-full max-w-[440px] px-6">
+        <!-- Logo -->
+        <div class="text-center mb-10">
+            <a href="/" class="inline-block font-unbounded font-black text-2xl tracking-widest uppercase gold-gradient">
+                VissumLex
+            </a>
+            <p class="text-[10px] uppercase tracking-[0.4em] text-white/30 mt-2">Academy Access</p>
+        </div>
+
+        <!-- Auth Card -->
+        <div class="glass-card rounded-[32px] overflow-hidden">
+            <!-- Tabs -->
+            <div class="flex border-b border-white/5">
+                <button id="loginTab" onclick="switchForm('login')" class="flex-1 py-5 text-[11px] font-black uppercase tracking-widest transition-all tab-active">Вход</button>
+                <button id="registerTab" onclick="switchForm('register')" class="flex-1 py-5 text-[11px] font-black uppercase tracking-widest transition-all text-white/30">Регистрация</button>
+            </div>
+
+            <div class="p-8 md:p-10">
+                <!-- Login Form -->
+                <form id="loginForm" class="form-container active-form" onsubmit="handleLogin(event)">
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-white/40 mb-2 ml-1">Email</label>
+                            <input type="email" id="loginEmail" placeholder="example@mail.com" class="input-gold w-full px-5 py-4 rounded-2xl text-sm font-medium" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-white/40 mb-2 ml-1">Пароль</label>
+                            <input type="password" id="loginPassword" placeholder="••••••••" class="input-gold w-full px-5 py-4 rounded-2xl text-sm font-medium" required>
+                        </div>
+                        <div class="flex justify-end">
+                            <a href="#" class="text-[10px] uppercase tracking-widest text-[#D4AF37] hover:underline">Забыли пароль?</a>
+                        </div>
+                        <button type="submit" class="btn-gold w-full py-5 rounded-2xl uppercase tracking-[0.2em] text-[12px] mt-4">
+                            Войти в академию
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="form-container hidden-form" onsubmit="handleRegister(event)">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-white/40 mb-2 ml-1">Ваше имя</label>
+                            <input type="text" id="registerUsername" placeholder="Александр" class="input-gold w-full px-5 py-4 rounded-2xl text-sm font-medium" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-white/40 mb-2 ml-1">Email</label>
+                            <input type="email" id="registerEmail" placeholder="example@mail.com" class="input-gold w-full px-5 py-4 rounded-2xl text-sm font-medium" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-white/40 mb-2 ml-1">Пароль</label>
+                            <input type="password" id="registerPassword" placeholder="Придумайте пароль" class="input-gold w-full px-5 py-4 rounded-2xl text-sm font-medium" required>
+                        </div>
+                        <div class="flex items-start gap-3 py-2">
+                            <input type="checkbox" id="terms" class="mt-1 accent-[#D4AF37]" required>
+                            <label for="terms" class="text-[10px] text-white/40 leading-relaxed uppercase tracking-widest">Я согласен с условиями использования и политикой конфиденциальности</label>
+                        </div>
+                        <button type="submit" class="btn-gold w-full py-5 rounded-2xl uppercase tracking-[0.2em] text-[12px] mt-2">
+                            Создать аккаунт
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Socials Mock -->
+                <div class="mt-10">
+                    <div class="relative flex items-center justify-center mb-8">
+                        <div class="absolute w-full h-px bg-white/5"></div>
+                        <span class="relative bg-[#0b0b0b] px-4 text-[9px] uppercase tracking-[0.3em] text-white/20">или войти через</span>
+                    </div>
+                    <div class="flex gap-4">
+                        <button class="flex-1 py-4 glass-card border-white/5 rounded-2xl flex justify-center hover:bg-white/5 transition-all">
+                            <i class="lucide-chrome size-5 text-white/60"></i>
+                        </button>
+                        <button class="flex-1 py-4 glass-card border-white/5 rounded-2xl flex justify-center hover:bg-white/5 transition-all">
+                            <i class="lucide-github size-5 text-white/60"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to site -->
+        <div class="text-center mt-8">
+            <a href="/api/users/landing/" class="text-[10px] uppercase tracking-[0.3em] text-white/30 hover:text-white transition-all">
+                ← Вернуться на главную
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function switchForm(type) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+
+            if (type === 'login') {
+                loginForm.classList.add('active-form');
+                loginForm.classList.remove('hidden-form');
+                registerForm.classList.add('hidden-form');
+                registerForm.classList.remove('active-form');
+
+                loginTab.classList.add('tab-active');
+                loginTab.classList.remove('text-white/30');
+                registerTab.classList.remove('tab-active');
+                registerTab.classList.add('text-white/30');
+            } else {
+                registerForm.classList.add('active-form');
+                registerForm.classList.remove('hidden-form');
+                loginForm.classList.add('hidden-form');
+                loginForm.classList.remove('active-form');
+
+                registerTab.classList.add('tab-active');
+                registerTab.classList.remove('text-white/30');
+                loginTab.classList.remove('tab-active');
+                loginTab.classList.add('text-white/30');
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/api/users/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Сохраняем токены
+                    localStorage.setItem('access_token', data.access);
+                    localStorage.setItem('refresh_token', data.refresh);
+
+                    // Устанавливаем куки для Django сессии (если используется session auth)
+                    // Но так как мы используем JWT, нам нужно передавать токен в заголовке Authorization
+                    // Для SPAViewSecond (TemplateView) с LoginRequiredMixin, Django ожидает сессионную куку.
+                    // JWT обычно используется для API вызовов.
+                    // Чтобы заставить LoginRequiredMixin работать, нам нужно либо использовать SessionAuthentication,
+                    // либо настроить middleware для аутентификации по JWT из куки.
+
+                    // Попробуем просто перенаправить, предполагая, что JWT будет использоваться в JS на следующей странице
+                    // Но LoginRequiredMixin на сервере не увидит JWT в localStorage.
+
+                    // ВАЖНО: LoginRequiredMixin проверяет request.user.is_authenticated.
+                    // Это работает через django.contrib.auth.middleware.AuthenticationMiddleware, который смотрит на sessionid cookie.
+                    // TokenObtainPairView возвращает JWT, но не создает сессию Django по умолчанию.
+
+                    // Решение: Мы должны либо убрать LoginRequiredMixin и проверять токен на клиенте,
+                    // либо делать логин через сессии.
+
+                    // Так как вы просили "добавить куки, jwt чтобы они срабатывали вместе с ... single-page-application2.html",
+                    // и там есть LoginRequiredMixin, то нам нужно установить куку access_token.
+
+                    document.cookie = `access_token=${data.access}; path=/; max-age=3600`; // 1 час
+
+                    window.location.href = '/api/users/spa-2/';
+                } else {
+                    alert('Ошибка входа. Проверьте данные.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ошибка сети.');
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const response = await fetch('/api/users/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                if (response.ok) {
+                    alert('Регистрация успешна! Теперь войдите.');
+                    switchForm('login');
+                    document.getElementById('loginEmail').value = email;
+                } else {
+                    const data = await response.json();
+                    alert('Ошибка регистрации: ' + JSON.stringify(data));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ошибка сети.');
+            }
+        }
+    </script>
+</body>
+</html>

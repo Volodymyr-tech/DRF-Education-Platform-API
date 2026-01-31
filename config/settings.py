@@ -30,7 +30,7 @@ STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["84.252.135.53", "localhost", "127.0.0.1", ]
+ALLOWED_HOSTS = ["https://shawanda-nonbulbar-flynn.ngrok-free.dev", "localhost", "127.0.0.1", ]
 
 
 # Application definition
@@ -238,5 +238,5 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-LOGIN_URL = 'users:register'  # Если нет сессии, кидаем на регистрацию
-LOGIN_REDIRECT_URL = 'users:spa'  # Куда отправлять после успешного входа
+LOGIN_URL = 'users:auth-login'  # Если нет сессии, кидаем на регистрацию
+LOGIN_REDIRECT_URL = 'users:spa2'  # Куда отправлять после успешного входа
