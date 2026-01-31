@@ -75,8 +75,24 @@ class PaymentsCreateAPIView(generics.CreateAPIView):
         payment.save()
 
 
+
 class SPAView(TemplateView):
     template_name = "single-page-applicaion.html"
+    login_url = '/users/register/'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        courses = Course.objects.prefetch_related('modules__lessons').all()
+        context['user_subscriptions_ids'] = list(self.request.user.subscriptions.values_list('course_id', flat=True))
+        context['courses'] = courses
+        return context
+
+
+class SPAViewSecond(TemplateView):
+    template_name = "single-page-application2.html"
+    login_url = '/users/register/'
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -87,4 +103,7 @@ class SPAView(TemplateView):
 
 
 class LandingPageView(TemplateView):
-    template_name = "landing-page.html"
+    template_name = "landing-gold.html"
+
+
+

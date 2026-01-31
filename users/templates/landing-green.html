@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VissumLex | Legal Tech Revolution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Inter:wght@300;600;900&display=swap');
+
+        :root {
+            --lime: #CCFF00;
+            --dark: #000000;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .font-unbounded { font-family: 'Unbounded', sans-serif; }
+
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(at 0% 0%, rgba(204, 255, 0, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(204, 255, 0, 0.1) 0px, transparent 50%);
+            z-index: -1;
+        }
+
+        .lime-glow {
+            text-shadow: 0 0 15px rgba(204, 255, 0, 0.5);
+        }
+
+        .box-glow {
+            box-shadow: 0 0 30px rgba(204, 255, 0, 0.15);
+        }
+
+        .hype-border {
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hype-border:hover {
+            border-color: var(--lime);
+            box-shadow: 0 0 40px rgba(204, 255, 0, 0.2);
+            transform: scale(1.01);
+        }
+
+        .btn-lime {
+            background-color: var(--lime);
+            color: black;
+            font-weight: 900;
+            box-shadow: 0 10px 30px rgba(204, 255, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-lime:hover {
+            transform: translateY(-4px) rotate(-1deg);
+            box-shadow: 0 15px 40px rgba(204, 255, 0, 0.5);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        /* Маркеры процесса */
+        .step-number {
+            -webkit-text-stroke: 1px var(--lime);
+            color: transparent;
+        }
+
+        /* Анимация карточек сравнения */
+        .compare-card {
+            transition: all 0.5s ease;
+        }
+        .compare-card:hover {
+            transform: skewX(-1deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[95%] max-w-5xl">
+        <div class="glass-card hype-border rounded-full px-8 py-4 flex justify-between items-center">
+            <div class="font-unbounded font-black text-2xl tracking-tighter">
+                <span class="text-[#CCFF00] lime-glow">V</span>LEX
+            </div>
+            <div class="hidden md:flex gap-10 text-[11px] uppercase tracking-[0.3em] font-black">
+                <a href="#process" class="hover:text-[#CCFF00] transition-colors">Процесс</a>
+                <a href="#ai" class="hover:text-[#CCFF00] transition-colors">AI-Ядро</a>
+                <a href="#pricing" class="hover:text-[#CCFF00] transition-colors">Тарифы</a>
+            </div>
+            <button class="bg-white text-black text-[11px] font-black px-6 py-2.5 rounded-full uppercase tracking-widest hover:bg-[#CCFF00] transition-colors">
+                Войти
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative pt-48 pb-20 px-6 text-center">
+        <div class="max-w-6xl mx-auto">
+            <div class="inline-block px-4 py-1.5 border border-[#CCFF00]/30 rounded-full bg-[#CCFF00]/5 mb-10 reveal">
+                <span class="text-[10px] uppercase tracking-[0.4em] text-[#CCFF00] font-black">Legal Tech Revolution 2026</span>
+            </div>
+
+            <h1 class="font-unbounded text-5xl md:text-[110px] font-black leading-none tracking-tighter mb-12 reveal">
+                ИСПАНИЯ <br>
+                <span class="text-[#CCFF00] lime-glow italic">БЕЗ ПАУЗ</span>
+            </h1>
+
+            <p class="text-xl md:text-3xl font-light text-white/60 max-w-3xl mx-auto mb-16 leading-tight reveal">
+                Замени адвоката за €2000 на <br>
+                <span class="text-white font-bold">интеллектуальную платформу.</span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center reveal">
+                <button class="btn-lime px-14 py-7 rounded-2xl text-xl uppercase italic font-black">
+                    Забрать доступ
+                </button>
+                <div class="text-xs font-black uppercase tracking-widest text-white/30 flex items-center gap-4">
+                    <span class="w-10 h-px bg-white/10"></span>
+                    No lawyers needed
+                    <span class="w-10 h-px bg-white/10"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Roadmap -->
+    <section id="process" class="py-32 px-6 max-w-7xl mx-auto">
+        <h2 class="font-unbounded text-4xl md:text-6xl font-black mb-20 reveal">КАК ЭТО <span class="text-[#CCFF00] italic">РАБОТАЕТ</span></h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="glass-card hype-border p-8 rounded-[32px] reveal">
+                <div class="font-unbounded text-6xl font-black step-number mb-6">01</div>
+                <h4 class="font-black text-xl mb-4">РЕГИСТРАЦИЯ</h4>
+                <p class="text-white/40 text-sm">Выбираешь тип ВНЖ, и система мгновенно строит твой персональный Roadmap.</p>
+            </div>
+            <div class="glass-card hype-border p-8 rounded-[32px] reveal">
+                <div class="font-unbounded text-6xl font-black step-number mb-6">02</div>
+                <h4 class="font-black text-xl mb-4">СБОР ДОКОВ</h4>
+                <p class="text-white/40 text-sm">ИИ проверяет каждую справку на лету. Ошибки исключены алгоритмом.</p>
+            </div>
+            <div class="glass-card hype-border p-8 rounded-[32px] reveal">
+                <div class="font-unbounded text-6xl font-black step-number mb-6">03</div>
+                <h4 class="font-black text-xl mb-4">ПОДАЧА</h4>
+                <p class="text-white/40 text-sm">Следуешь пошаговой инструкции по загрузке в систему Меркурио.</p>
+            </div>
+            <div class="glass-card hype-border p-8 rounded-[32px] reveal">
+                <div class="font-unbounded text-6xl font-black step-number mb-6">04</div>
+                <h4 class="font-black text-xl mb-4">FAVORABLE</h4>
+                <p class="text-white/40 text-sm">Получаешь одобрение и карточку резидента на 3 года. Без переплат.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid (AI Deep Dive) -->
+    <section id="ai" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <!-- AI Logic -->
+            <div class="md:col-span-8 glass-card hype-border rounded-[48px] p-12 overflow-hidden relative group reveal">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-[#CCFF00]/10 blur-[120px]"></div>
+                <div class="relative z-10">
+                    <div class="mb-10 text-[#CCFF00] lime-glow">
+                        <i class="lucide-brain-circuit size-12"></i>
+                    </div>
+                    <h2 class="font-unbounded text-4xl md:text-5xl font-black mb-8 leading-none">AI-ПРОВЕРКА <br>ДОКУМЕНТОВ</h2>
+                    <p class="text-white/50 max-w-md text-xl font-medium leading-relaxed">Система видит ошибки, которые пропускают юристы. Чекаем справки, контракты и страховки за секунды.</p>
+                </div>
+
+                <div class="mt-12 bg-black/80 rounded-3xl p-8 font-mono text-sm text-[#CCFF00] border border-[#CCFF00]/20 box-glow">
+                    <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse"></span> Analyzing file: criminal_record.pdf</div>
+                    <div class="text-white/40">> Apostille found: YES</div>
+                    <div class="text-white/40">> Expiration date check: OK</div>
+                    <div class="mt-4 text-white font-bold tracking-widest uppercase">Status: <span class="bg-[#CCFF00] text-black px-2">VALID</span></div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="md:col-span-4 bg-[#CCFF00] rounded-[48px] p-12 text-black flex flex-col justify-between box-glow reveal">
+                <h3 class="font-unbounded text-8xl font-black italic tracking-tighter">99.2%</h3>
+                <div>
+                    <div class="font-black text-2xl uppercase leading-none mb-3">Approval Rate</div>
+                    <p class="text-black/70 text-base font-bold">Наша статистика одобрений за 2025 год по всей Испании.</p>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="md:col-span-12 glass-card hype-border rounded-[48px] p-12 reveal">
+                <h3 class="font-unbounded text-3xl font-black mb-12 text-center uppercase tracking-tighter">VLEX <span class="text-[#CCFF00]">vs</span> КЛАССИКА</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-8 border border-white/5 bg-white/[0.01] rounded-3xl opacity-40">
+                        <h4 class="font-black text-xl mb-6 uppercase text-white/50">Обычный адвокат</h4>
+                        <ul class="space-y-4 text-sm font-medium">
+                            <li class="flex items-center gap-3">❌ От €1500 до €3000 за кейс</li>
+                            <li class="flex items-center gap-3">❌ Ответы в WhatsApp через 3 дня</li>
+                            <li class="flex items-center gap-3">❌ Человеческий фактор и ошибки</li>
+                            <li class="flex items-center gap-3">❌ "Черный ящик": ты не знаешь статус</li>
+                        </ul>
+                    </div>
+                    <div class="p-8 border-2 border-[#CCFF00]/40 bg-[#CCFF00]/5 rounded-3xl box-glow">
+                        <h4 class="font-black text-xl mb-6 uppercase text-[#CCFF00]">VissumLex Academy</h4>
+                        <ul class="space-y-4 text-sm font-bold">
+                            <li class="flex items-center gap-3">✅ От €99 — честная цена</li>
+                            <li class="flex items-center gap-3">✅ AI-ассистент отвечает за 0.5 сек 24/7</li>
+                            <li class="flex items-center gap-3">✅ Алгоритмы не ошибаются в датах</li>
+                            <li class="flex items-center gap-3">✅ Полный контроль в твоем дашборде</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust -->
+            <div class="md:col-span-5 glass-card hype-border rounded-[48px] p-12 reveal">
+                <div class="mb-8"><i class="lucide-shield-check size-10 text-[#CCFF00]"></i></div>
+                <h4 class="font-unbounded text-2xl font-black mb-6">10 ЛЕТ В ПОЛЕ</h4>
+                <p class="text-white/50 text-lg leading-relaxed font-medium">Это не просто сайт. Это база знаний реальной коллегии адвокатов, переведенная в алгоритмы.</p>
+            </div>
+
+            <!-- Community -->
+            <div class="md:col-span-7 glass-card hype-border rounded-[48px] p-12 flex flex-col md:flex-row items-center gap-12 reveal">
+                <div class="flex-1">
+                    <h4 class="font-unbounded text-2xl font-black mb-4 uppercase">Community 24/7</h4>
+                    <p class="text-white/50 text-lg font-medium italic">Закрытый чат тех, кто уже переехал. Реальная помощь без пафоса.</p>
+                </div>
+                <div class="flex -space-x-8">
+                    <div class="w-24 h-24 rounded-full border-4 border-black bg-zinc-800 shadow-xl"></div>
+                    <div class="w-24 h-24 rounded-full border-4 border-black bg-zinc-700 shadow-xl"></div>
+                    <div class="w-24 h-24 rounded-full border-4 border-black bg-[#CCFF00] flex items-center justify-center text-black font-black text-xl italic shadow-xl">VLEX</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-32 px-6 relative">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="font-unbounded text-4xl md:text-7xl font-black text-center mb-24 reveal">ЦЕНА <span class="text-[#CCFF00] lime-glow">СВОБОДЫ</span></h2>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <!-- Basic -->
+                <div class="glass-card hype-border rounded-[56px] p-14 flex flex-col reveal">
+                    <div class="text-[12px] font-black uppercase tracking-[0.4em] text-white/30 mb-10">Digital Starter</div>
+                    <div class="font-unbounded text-6xl font-black mb-12 text-white italic">€99</div>
+                    <ul class="space-y-6 mb-16 flex-1 text-base font-bold text-white/50">
+                        <li class="flex items-center gap-4"><i class="lucide-check-circle size-5 text-[#CCFF00]"></i> 1 курс (Nomad / NLV / Study)</li>
+                        <li class="flex items-center gap-4"><i class="lucide-check-circle size-5 text-[#CCFF00]"></i> Все шаблоны документов</li>
+                        <li class="flex items-center gap-4 opacity-20"><i class="lucide-circle-dashed size-5"></i> Безлимитный AI</li>
+                    </ul>
+                    <button class="w-full py-6 border-2 border-[#CCFF00]/30 rounded-3xl font-black uppercase tracking-[0.2em] hover:bg-[#CCFF00] hover:text-black transition-all">
+                        ВЫБРАТЬ
+                    </button>
+                </div>
+
+                <!-- Pro -->
+                <div class="bg-white text-black rounded-[56px] p-14 flex flex-col relative overflow-hidden box-glow transform md:scale-105 reveal">
+                    <div class="absolute top-8 right-10 bg-black text-[#CCFF00] text-[10px] font-black px-4 py-1.5 rounded-full uppercase italic animate-bounce">Best Tech</div>
+                    <div class="text-[12px] font-black uppercase tracking-[0.4em] text-black/30 mb-10">Full Access</div>
+                    <div class="font-unbounded text-6xl font-black mb-12 italic">€229</div>
+                    <ul class="space-y-6 mb-16 flex-1 text-base font-black">
+                        <li class="flex items-center gap-4"><i class="lucide-zap size-5 fill-current"></i> ВСЕ курсы академии</li>
+                        <li class="flex items-center gap-4"><i class="lucide-zap size-5 fill-current"></i> Безлимитный ИИ-адвокат</li>
+                        <li class="flex items-center gap-4"><i class="lucide-zap size-5 fill-current"></i> Прямая поддержка</li>
+                    </ul>
+                    <button class="w-full py-6 bg-black text-white rounded-3xl font-black uppercase tracking-[0.2em] hover:bg-[#CCFF00] hover:text-black transition-all">
+                        НАЧАТЬ СЕЙЧАС
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cases / Reviews Section -->
+    <section class="py-32 px-6 bg-white/[0.02] overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="font-unbounded text-4xl md:text-5xl font-black mb-20 reveal">КЕЙСЫ <span class="text-[#CCFF00]">2025</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card hype-border p-10 rounded-3xl reveal">
+                    <div class="flex gap-1 mb-6">
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                    </div>
+                    <p class="text-lg font-bold mb-6 italic">"Подался на Номада за неделю. ИИ нашел ошибку в страховке, которую я сам бы не заметил. Одобрили через 21 день!"</p>
+                    <div class="text-xs uppercase font-black text-[#CCFF00] tracking-widest">Александр, Fullstack Dev</div>
+                </div>
+                <div class="glass-card hype-border p-10 rounded-3xl reveal">
+                    <div class="flex gap-1 mb-6">
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                    </div>
+                    <p class="text-lg font-bold mb-6 italic">"Раньше платила адвокатам по €200 за консультацию. Здесь за €99 получила ВСЁ. Переехала в Валенсию с семьей."</p>
+                    <div class="text-xs uppercase font-black text-[#CCFF00] tracking-widest">Мария, Маркетолог</div>
+                </div>
+                <div class="glass-card hype-border p-10 rounded-3xl reveal">
+                    <div class="flex gap-1 mb-6">
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                        <i class="lucide-star size-4 fill-[#CCFF00] text-[#CCFF00]"></i>
+                    </div>
+                    <p class="text-lg font-bold mb-6 italic">"Лучшее вложение денег. Гайды по Меркурио настолько подробные, что накосячить просто невозможно."</p>
+                    <div class="text-xs uppercase font-black text-[#CCFF00] tracking-widest">Игорь, Дизайнер</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-24 px-6 border-t border-white/5 bg-black/50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-12">
+            <div>
+                <div class="font-unbounded font-black text-5xl italic tracking-tighter mb-6 text-[#CCFF00] lime-glow">
+                    VLEX
+                </div>
+                <p class="text-white/20 text-sm font-black uppercase tracking-[0.3em]">Legal Tech Revolution 2026</p>
+            </div>
+            <div class="text-right">
+                <div class="flex gap-8 mb-6 text-white/40 font-bold uppercase text-[10px] tracking-widest">
+                    <a href="#" class="hover:text-[#CCFF00]">Terms</a>
+                    <a href="#" class="hover:text-[#CCFF00]">Privacy</a>
+                    <a href="#" class="hover:text-[#CCFF00]">Support</a>
+                </div>
+                <p class="text-white/60 text-sm font-medium italic italic">Сделано юристами. Усилено кодом. Ускоренно ИИ.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, revealOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach((el, i) => {
+                    if (i < 4) el.classList.add('active');
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

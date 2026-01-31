@@ -9,7 +9,7 @@ from .views import (
     RegisterView,
     UserProfileViewSet,
     SPAView,
-    LandingPageView,
+    LandingPageView, SPAViewSecond,
 )
 
 router = DefaultRouter()
@@ -29,5 +29,6 @@ urlpatterns = [
     ),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("spa/", SPAView.as_view(), name="spa"),
+    path("spa-2/", SPAViewSecond.as_view(), name="spa2"),
     path("landing/", LandingPageView.as_view(), name="landing"),
 ]

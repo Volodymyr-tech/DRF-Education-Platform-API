@@ -236,3 +236,7 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # Пароль прил�
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+LOGIN_URL = 'users:register'  # Если нет сессии, кидаем на регистрацию
+LOGIN_REDIRECT_URL = 'users:spa'  # Куда отправлять после успешного входа
