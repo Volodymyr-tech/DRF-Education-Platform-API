@@ -6,14 +6,16 @@ from .views import (
     LessonListCreateAPIView,
     LessonRetrieveUpdateDestroyAPIView,
     SubscriptionCreateDestroyAPIView,
-    MaterialTemplateListAPIView,
-    MaterialGuideListAPIView,
-    LawyerCaseListAPIView,
+    MaterialTemplateViewSet,
+    MaterialGuideViewSet,
+    LawyerCaseViewSet,
 )
 
 router = DefaultRouter()
 router.register(r"courses", CourseViewSet)
-# router.register(r'subscriptions', SubscriptionViewSet)
+router.register(r"templates", MaterialTemplateViewSet)
+router.register(r"guides", MaterialGuideViewSet)
+router.register(r"lawyer-cases", LawyerCaseViewSet)
 
 app_name = "materials"
 
@@ -35,7 +37,4 @@ urlpatterns = [
         SubscriptionCreateDestroyAPIView.as_view(),
         name="subscription-delete",
     ),
-    path("templates/", MaterialTemplateListAPIView.as_view(), name="template-list"),
-    path("guides/", MaterialGuideListAPIView.as_view(), name="guide-list"),
-    path("lawyer-cases/", LawyerCaseListAPIView.as_view(), name="lawyer-case-list"),
 ]

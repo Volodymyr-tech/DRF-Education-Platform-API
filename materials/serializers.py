@@ -13,7 +13,6 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-        # validators = [LinkValidator(link_field="video_link")]
 
     def get_course(self, instance):
         if instance.course is not None:
@@ -25,7 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
     quantity_lessons = serializers.SerializerMethodField()
     lessons = LessonSerializer(
         many=True, required=False, default=[], read_only=True
-    )  # many=True makes the serializer return a list of LessonSerializer objects
+    )
     user_subscription = serializers.SerializerMethodField(
         required=False, read_only=True
     )
@@ -36,9 +35,7 @@ class CourseSerializer(serializers.ModelSerializer):
         read_only_fields = ("created_at",)
 
     def get_quantity_lessons(self, instance):
-        return (
-            instance.lessons.count()
-        )  # instatse is the course object and 'lessons' is the related name in the Course model
+        return instance.lessons.count()
 
     def get_user_subscription(self, instance):
         request = self.context.get("request")
@@ -49,13 +46,19 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Subscription
         fields = "__all__"
 
 
-class MaterialTemplateSerializer(serializers.ModelSerializer):
+# --- Templates ---
+
+class MaterialTemplateListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MaterialTemplate
+        fields = ['id', 'title', 'description', 'created_at']
+
+class MaterialTemplateDetailSerializer(serializers.ModelSerializer):
     file_size = serializers.SerializerMethodField()
 
     class Meta:
@@ -69,7 +72,14 @@ class MaterialTemplateSerializer(serializers.ModelSerializer):
             return "Unknown"
 
 
-class MaterialGuideSerializer(serializers.ModelSerializer):
+# --- Guides ---
+
+class MaterialGuideListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MaterialGuide
+        fields = ['id', 'title', 'description', 'created_at']
+
+class MaterialGuideDetailSerializer(serializers.ModelSerializer):
     file_size = serializers.SerializerMethodField()
 
     class Meta:
@@ -83,7 +93,14 @@ class MaterialGuideSerializer(serializers.ModelSerializer):
             return "Unknown"
 
 
-class LawyerCaseSerializer(serializers.ModelSerializer):
+# --- Lawyer Cases ---
+
+class LawyerCaseListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LawyerCase
+        fields = ['id', 'title', 'description', 'preview', 'created_at']
+
+class LawyerCaseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = LawyerCase
         fields = "__all__"

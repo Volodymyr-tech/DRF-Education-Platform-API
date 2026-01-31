@@ -11,9 +11,12 @@ from .serializers import (
     CourseSerializer,
     LessonSerializer,
     SubscriptionSerializer,
-    MaterialTemplateSerializer,
-    MaterialGuideSerializer,
-    LawyerCaseSerializer
+    MaterialTemplateListSerializer,
+    MaterialTemplateDetailSerializer,
+    MaterialGuideListSerializer,
+    MaterialGuideDetailSerializer,
+    LawyerCaseListSerializer,
+    LawyerCaseDetailSerializer
 )
 from .tasks import send_update_mail
 
@@ -117,10 +120,6 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             ]  # only owners can delete lessons
         return [permission() for permission in permission_classes]
 
-    # def perform_update(self, serializer):
-    #     serializer.save()
-    #     send_update_mail.delay_on_commit(self.request.user.pk)
-
 
 class SubscriptionCreateDestroyAPIView(generics.CreateAPIView, DestroyAPIView):
     """
@@ -138,19 +137,38 @@ class SubscriptionCreateDestroyAPIView(generics.CreateAPIView, DestroyAPIView):
         serializer.save(user=self.request.user)
 
 
-class MaterialTemplateListAPIView(generics.ListAPIView):
+class DatabasePagination(StandardResultsSetPagination):
+    page_size = 6
+
+
+class MaterialTemplateViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = MaterialTemplate.objects.all()
-    serializer_class = MaterialTemplateSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = DatabasePagination
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return MaterialTemplateDetailSerializer
+        return MaterialTemplateListSerializer
 
 
-class MaterialGuideListAPIView(generics.ListAPIView):
+class MaterialGuideViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = MaterialGuide.objects.all()
-    serializer_class = MaterialGuideSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = DatabasePagination
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return MaterialGuideDetailSerializer
+        return MaterialGuideListSerializer
 
 
-class LawyerCaseListAPIView(generics.ListAPIView):
+class LawyerCaseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = LawyerCase.objects.all()
-    serializer_class = LawyerCaseSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = DatabasePagination
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return LawyerCaseDetailSerializer
+        return LawyerCaseListSerializer
