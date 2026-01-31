@@ -20,8 +20,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", site.urls),
+    path("", include("users.urls", namespace="users")),  # Frontend pages at root
     path("api/materials/", include("materials.urls", namespace="materials")),
-    path("api/users/", include("users.urls")),
+    path("api/users/", include("users.api_urls", namespace="users_api")), # API endpoints
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),

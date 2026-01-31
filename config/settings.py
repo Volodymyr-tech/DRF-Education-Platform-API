@@ -30,7 +30,7 @@ STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://shawanda-nonbulbar-flynn.ngrok-free.dev", "localhost", "127.0.0.1", ]
+ALLOWED_HOSTS = ["shawanda-nonbulbar-flynn.ngrok-free.dev", "localhost", "127.0.0.1", ]
 
 
 # Application definition
@@ -177,9 +177,10 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # FRONTEND
     "http://84.252.135.53:8000",
+    "https://shawanda-nonbulbar-flynn.ngrok-free.dev",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "https://shawanda-nonbulbar-flynn.ngrok-free.dev"]
 
 CORS_ALLOW_ALL_ORIGINS = False
 

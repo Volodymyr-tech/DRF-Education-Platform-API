@@ -187,7 +187,7 @@
 
         <!-- Back to site -->
         <div class="text-center mt-8">
-            <a href="/api/users/landing/" class="text-[10px] uppercase tracking-[0.3em] text-white/30 hover:text-white transition-all">
+            <a href="{% url 'users:landing' %}" class="text-[10px] uppercase tracking-[0.3em] text-white/30 hover:text-white transition-all">
                 ← Вернуться на главную
             </a>
         </div>
@@ -265,7 +265,7 @@
 
                     document.cookie = `access_token=${data.access}; path=/; max-age=3600`; // 1 час
 
-                    window.location.href = '/api/users/spa-2/';
+                    window.location.href = '/spa-2/';
                 } else {
                     alert('Ошибка входа. Проверьте данные.');
                 }
