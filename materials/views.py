@@ -6,8 +6,15 @@ from rest_framework.permissions import IsAuthenticated
 from users.paginators import StandardResultsSetPagination
 from users.permissions import IsModer, IsOwner, IsSubscriber, NotIsModer
 
-from .models import Course, Lesson, Subscription
-from .serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from .models import Course, Lesson, Subscription, MaterialTemplate, MaterialGuide, LawyerCase
+from .serializers import (
+    CourseSerializer,
+    LessonSerializer,
+    SubscriptionSerializer,
+    MaterialTemplateSerializer,
+    MaterialGuideSerializer,
+    LawyerCaseSerializer
+)
 from .tasks import send_update_mail
 
 
@@ -129,3 +136,21 @@ class SubscriptionCreateDestroyAPIView(generics.CreateAPIView, DestroyAPIView):
         if Subscription.objects.filter(user=self.request.user, course=course).exists():
             raise PermissionDenied("You are already subscribed to this course")
         serializer.save(user=self.request.user)
+
+
+class MaterialTemplateListAPIView(generics.ListAPIView):
+    queryset = MaterialTemplate.objects.all()
+    serializer_class = MaterialTemplateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class MaterialGuideListAPIView(generics.ListAPIView):
+    queryset = MaterialGuide.objects.all()
+    serializer_class = MaterialGuideSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class LawyerCaseListAPIView(generics.ListAPIView):
+    queryset = LawyerCase.objects.all()
+    serializer_class = LawyerCaseSerializer
+    permission_classes = [IsAuthenticated]

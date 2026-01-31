@@ -178,10 +178,27 @@
 
             <section id="section-lesson" class="hidden section-fade"><div id="lesson-content" class="max-w-6xl mx-auto space-y-8"></div></section>
 
-            <section id="section-database" class="hidden section-fade grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="premium-card p-10 text-center"><i data-lucide="file-text" class="w-12 h-12 mx-auto mb-6 text-indigo-400"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Шаблоны EX</h5><p class="text-xs text-gray-500 italic">Полный архив бланков 2026.</p></div>
-                <div class="premium-card p-10 text-center border-yellow-500/20"><i data-lucide="gavel" class="w-12 h-12 mx-auto mb-6 text-yellow-500"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Адвокаты</h5><p class="text-xs text-gray-500 italic">Разборы судебных прецедентов.</p></div>
-                <div class="premium-card p-10 text-center"><i data-lucide="map" class="w-12 h-12 mx-auto mb-6 text-green-500"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Гайды</h5><p class="text-xs text-gray-500 italic">Специфика подачи по регионам.</p></div>
+            <section id="section-database" class="hidden section-fade space-y-12">
+                <div>
+                    <h3 class="text-2xl font-black italic gold-text uppercase mb-6">Шаблоны документов</h3>
+                    <div id="templates-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="col-span-full text-center text-gray-500 text-sm animate-pulse">Загрузка шаблонов...</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-black italic gold-text uppercase mb-6">Гайды и инструкции</h3>
+                    <div id="guides-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                         <div class="col-span-full text-center text-gray-500 text-sm animate-pulse">Загрузка гайдов...</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-black italic gold-text uppercase mb-6">Разборы адвокатов</h3>
+                    <div id="lawyer-cases-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="col-span-full text-center text-gray-500 text-sm animate-pulse">Загрузка видео...</div>
+                    </div>
+                </div>
             </section>
         </div>
 
@@ -245,6 +262,21 @@
                             ПОЛУЧИТЬ ВСЁ
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Reader Modal -->
+        <div id="pdf-reader-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/90 backdrop-blur-lg">
+            <div class="w-full h-full flex flex-col p-4 sm:p-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="pdf-title" class="text-lg font-bold text-white/80"></h3>
+                    <button onclick="closePdfReader()" class="p-2 rounded-full hover:bg-white/10 transition-colors">
+                        <i data-lucide="x" class="w-6 h-6 text-white/80"></i>
+                    </button>
+                </div>
+                <div class="flex-1 bg-gray-800 rounded-lg overflow-hidden">
+                    <iframe id="pdf-iframe" class="w-full h-full" frameborder="0"></iframe>
                 </div>
             </div>
         </div>
@@ -316,6 +348,115 @@
             window.location.href = '/api/users/auth-login/';
         }
 
+        // DATABASE DATA
+        let templates = [];
+        let guides = [];
+        let lawyerCases = [];
+        let databaseLoaded = false;
+
+        async function fetchDatabaseData() {
+            if (databaseLoaded) return;
+
+            const token = localStorage.getItem('access_token');
+            if (!token) return;
+
+            try {
+                const [templatesRes, guidesRes, casesRes] = await Promise.all([
+                    fetch('/api/materials/templates/', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/materials/guides/', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/materials/lawyer-cases/', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                if (templatesRes.ok) templates = await templatesRes.json();
+                if (guidesRes.ok) guides = await guidesRes.json();
+                if (casesRes.ok) lawyerCases = await casesRes.json();
+
+                databaseLoaded = true;
+                renderDatabase();
+            } catch (e) {
+                console.error("Failed to load database", e);
+            }
+        }
+
+        function renderDatabase() {
+            const templatesGrid = document.getElementById('templates-grid');
+            templatesGrid.innerHTML = templates.map(t => `
+                <div class="premium-card p-6 flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <i data-lucide="file-text" class="w-10 h-10 text-indigo-400 group-hover:text-white transition-colors"></i>
+                            <a href="${t.file}" download class="p-2 rounded-full hover:bg-white/10 transition-colors">
+                                <i data-lucide="download" class="w-4 h-4 text-gray-400"></i>
+                            </a>
+                        </div>
+                        <h5 class="font-bold text-lg mb-2 italic uppercase leading-tight">${t.title}</h5>
+                        <p class="text-xs text-gray-500 italic line-clamp-2">${t.description}</p>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <button onclick="openPdfReader('${t.title}', '${t.file}')" class="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-white transition-colors">
+                            Читать
+                        </button>
+                        <span class="text-xs text-gray-600 font-mono">${t.file_size}</span>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-gray-500 text-sm col-span-full">Нет доступных шаблонов.</p>';
+
+            const guidesGrid = document.getElementById('guides-grid');
+            guidesGrid.innerHTML = guides.map(g => `
+                <div class="premium-card p-6 flex flex-col justify-between group border-green-500/20">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <i data-lucide="map" class="w-10 h-10 text-green-500 group-hover:text-white transition-colors"></i>
+                            <a href="${g.file}" download class="p-2 rounded-full hover:bg-white/10 transition-colors">
+                                <i data-lucide="download" class="w-4 h-4 text-gray-400"></i>
+                            </a>
+                        </div>
+                        <h5 class="font-bold text-lg mb-2 italic uppercase leading-tight">${g.title}</h5>
+                        <p class="text-xs text-gray-500 italic line-clamp-2">${g.description}</p>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <button onclick="openPdfReader('${g.title}', '${g.file}')" class="text-[10px] font-black uppercase tracking-widest text-green-500 hover:text-white transition-colors">
+                            Читать
+                        </button>
+                        <span class="text-xs text-gray-600 font-mono">${g.file_size}</span>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-gray-500 text-sm col-span-full">Нет доступных гайдов.</p>';
+
+            const casesGrid = document.getElementById('lawyer-cases-grid');
+            casesGrid.innerHTML = lawyerCases.map(c => `
+                <div class="premium-card p-0 overflow-hidden group border-yellow-500/20 hover:border-yellow-500/50">
+                    <div class="aspect-video bg-black relative">
+                        ${c.preview ? `<img src="${c.preview}" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity">` : '<div class="w-full h-full bg-zinc-900"></div>'}
+                        <a href="${c.video_link}" target="_blank" class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black shadow-lg transform group-hover:scale-110 transition-transform">
+                                <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-6">
+                        <h5 class="font-bold text-lg mb-2 italic uppercase leading-tight text-yellow-500">${c.title}</h5>
+                        <p class="text-xs text-gray-500 italic line-clamp-3">${c.description}</p>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-gray-500 text-sm col-span-full">Нет доступных разборов.</p>';
+
+            lucide.createIcons();
+        }
+
+        function openPdfReader(title, fileUrl) {
+            document.getElementById('pdf-title').innerText = title;
+            document.getElementById('pdf-iframe').src = fileUrl;
+            document.getElementById('pdf-reader-modal').classList.remove('hidden');
+            document.getElementById('pdf-reader-modal').classList.add('flex');
+        }
+
+        function closePdfReader() {
+            document.getElementById('pdf-reader-modal').classList.add('hidden');
+            document.getElementById('pdf-reader-modal').classList.remove('flex');
+            document.getElementById('pdf-iframe').src = ''; // Clear src to stop loading
+        }
+
         // DJANGO DATA
         const allCourses = [
             {% for course in courses %}
@@ -340,6 +481,10 @@
             document.getElementById(`nav-${id}`)?.classList.add('active');
             const titles = { 'dashboard': 'Дашборд', 'courses': 'Библиотека', 'database': 'База знаний', 'lesson': 'Обучение' };
             document.getElementById('header-title').innerText = titles[id] || 'VissumLex';
+
+            if (id === 'database') {
+                fetchDatabaseData();
+            }
         }
 
         function renderCourses() {

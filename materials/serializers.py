@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Course, Lesson, Subscription
+from .models import Course, Lesson, Subscription, MaterialTemplate, MaterialGuide, LawyerCase
 from .validators import LinkValidator
 
 
@@ -54,26 +54,36 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         model = Subscription
         fields = "__all__"
 
-    # def create(self, validated_data):
-    #     lessons_data = validated_data.pop('lessons', None)  # getting info about lessons from the validated_data
-    #     course = Course.objects.create(**validated_data)  # creating a course with the validated data
-    #
-    #     if lessons_data:  # if there are lessons, create them for the course
-    #         for lesson_data in lessons_data:
-    #             Lesson.objects.create(course=course, **lesson_data)  # creating lessons for the course
-    #
-    #     return course
-    #
-    #
-    # def update(self, instance, validated_data):
-    #     lessons_data = validated_data.pop('lessons', [])  # getting info about lessons from the validated_data
-    #     instance.update(**validated_data)  # updating the course with the validated data
-    #
-    #     for lesson_data in lessons_data:
-    #         if 'id' in lesson_data:  # if the lesson has an id, it means it already exists in the database
-    #             lesson = Lesson.objects.get(id=lesson_data.pop('id'))
-    #             lesson.update(**lesson_data)
-    #         else:
-    #             Lesson.objects.create(course=instance, **lesson_data)  # creating a new lesson for the course
-    #
-    #     return instance
+
+class MaterialTemplateSerializer(serializers.ModelSerializer):
+    file_size = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MaterialTemplate
+        fields = "__all__"
+
+    def get_file_size(self, obj):
+        try:
+            return f"{obj.file.size / 1024 / 1024:.2f} MB"
+        except:
+            return "Unknown"
+
+
+class MaterialGuideSerializer(serializers.ModelSerializer):
+    file_size = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MaterialGuide
+        fields = "__all__"
+
+    def get_file_size(self, obj):
+        try:
+            return f"{obj.file.size / 1024 / 1024:.2f} MB"
+        except:
+            return "Unknown"
+
+
+class LawyerCaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LawyerCase
+        fields = "__all__"

@@ -72,3 +72,34 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.course.title}"
+
+
+class MaterialTemplate(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    file = models.FileField(upload_to="templates/")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class MaterialGuide(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    file = models.FileField(upload_to="guides/")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class LawyerCase(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    video_link = models.URLField()
+    preview = models.ImageField(upload_to="lawyer_cases/", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

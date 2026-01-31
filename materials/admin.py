@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from materials.models import Course, Lesson, Subscription, Module
+from materials.models import Course, Lesson, Subscription, Module, MaterialTemplate, MaterialGuide, LawyerCase
 
 
 # Register your models here.
@@ -35,4 +35,27 @@ class SubscriptionAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "course",
+    )
+
+
+@admin.register(MaterialTemplate)
+class MaterialTemplateAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "created_at",
+    )
+
+@admin.register(MaterialGuide)
+class MaterialGuideAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "created_at",
+    )
+
+
+@admin.register(LawyerCase)
+class LawyerCaseAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "preview",
     )

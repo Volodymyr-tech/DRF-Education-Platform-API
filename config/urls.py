@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib.admin import site
 from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -19,8 +19,8 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/", include("materials.urls", namespace="materials")),
+    path("admin/", site.urls),
+    path("api/materials/", include("materials.urls", namespace="materials")),
     path("api/users/", include("users.urls")),
     path(
         "swagger/",
