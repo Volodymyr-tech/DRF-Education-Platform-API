@@ -23,68 +23,44 @@
             overflow: hidden;
         }
 
-        .gold-text {
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
+        .gold-text { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gold-gradient { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gold-border { border: 1px solid rgba(191, 149, 63, 0.3); }
 
-        /* Кнопки */
+        /* Тарифы и Кнопки */
+        .hype-border { border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); }
+        .box-glow { box-shadow: 0 0 50px rgba(255, 255, 255, 0.1); }
+        .btn-gold { background: var(--gold-gradient); color: black; font-weight: 900; }
+
         .btn-roadmap {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(191, 149, 63, 0.4);
-            border-radius: 16px;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            position: relative; display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 24px; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(191, 149, 63, 0.4); border-radius: 16px;
+            color: #fff; font-size: 10px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.12em; transition: all 0.4s ease; overflow: hidden;
         }
-        .btn-roadmap:hover { background: rgba(191, 149, 63, 0.1); border-color: #BF953F; transform: translateY(-2px); box-shadow: 0 0 20px rgba(191, 149, 63, 0.2); }
+        .btn-roadmap:hover { background: rgba(191, 149, 63, 0.1); border-color: #BF953F; transform: translateY(-2px); }
 
-        /* Карточки */
-        .premium-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-            border-radius: 32px;
-            transition: all 0.3s ease;
-        }
-        .premium-card:hover { border-color: rgba(191, 149, 63, 0.4); background: rgba(255, 255, 255, 0.05); }
-
-        /* Sidebar */
+        /* Стили SPA */
         .sidebar-item { color: #94a3b8; transition: all 0.2s ease; }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(191, 149, 63, 0.1) 0%, transparent 100%);
-            border-left: 4px solid #BF953F;
-            color: #ffffff;
+            border-left: 4px solid #BF953F; color: #ffffff;
         }
 
-        /* Roadmap Progress */
-        .roadmap-container {
-            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 100%);
-            border: 1px solid var(--card-border);
-            border-radius: 40px;
-        }
+        .roadmap-container { background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 100%); border: 1px solid var(--card-border); border-radius: 40px; }
         .step-node { width: 14px; height: 14px; border-radius: 50%; background: #1a1a1a; position: relative; z-index: 2; border: 2px solid #333; }
         .step-node.active { background: #BF953F; border-color: #FCF6BA; box-shadow: 0 0 20px #BF953F; }
         .roadmap-line { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.08); z-index: 1; }
 
-        /* AI Orb */
         .ai-core-container { background: #000; border: 1px solid rgba(191, 149, 63, 0.2); border-radius: 40px; cursor: pointer; position: relative; }
         .orb { width: 140px; height: 140px; border-radius: 50%; background: var(--gold-gradient); filter: blur(60px); opacity: 0.15; animation: orb-pulse 4s infinite alternate; }
         @keyframes orb-pulse { from { transform: scale(0.8); } to { transform: scale(1.2); } }
 
-        /* Checkout Bar */
+        .premium-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 32px; transition: all 0.3s ease; }
+        .premium-card:hover { border-color: #BF953F; transform: translateY(-5px); }
+
         #checkout-bar { transform: translateY(150%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         #checkout-bar.visible { transform: translateY(0); }
 
@@ -99,58 +75,37 @@
     <aside class="w-72 bg-black border-r border-white/5 flex flex-col z-50">
         <div class="p-8">
             <div class="flex items-center gap-3 cursor-pointer" onclick="switchSection('dashboard')">
-                <div class="w-10 h-10 bg-white flex items-center justify-center rounded-xl">
-                    <i data-lucide="scale" class="text-black w-6 h-6"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-black tracking-tighter leading-none">VISSUMLEX</h1>
-                    <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Academy 2026</p>
-                </div>
+                <div class="w-10 h-10 bg-white flex items-center justify-center rounded-xl"><i data-lucide="scale" class="text-black w-6 h-6"></i></div>
+                <div><h1 class="text-lg font-black tracking-tighter leading-none">VISSUMLEX</h1><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Academy 2026</p></div>
             </div>
         </div>
 
         <nav class="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
-            <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-4 mb-4">Навигация</p>
-            <a href="#" onclick="switchSection('dashboard')" id="nav-dashboard" class="sidebar-item active flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i> Дашборд
-            </a>
-            <a href="#" onclick="switchSection('courses')" id="nav-courses" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all">
-                <i data-lucide="book-open" class="w-5 h-5"></i> Все курсы
-            </a>
-            <a href="#" onclick="switchSection('database')" id="nav-database" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all">
-                <i data-lucide="database" class="w-5 h-5"></i> База знаний
-            </a>
+            <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-4 mb-4 text-center">System OS</p>
+            <a href="#" onclick="switchSection('dashboard')" id="nav-dashboard" class="sidebar-item active flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Дашборд</a>
+            <a href="#" onclick="switchSection('courses')" id="nav-courses" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Все курсы</a>
+            <a href="#" onclick="switchSection('database')" id="nav-database" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all"><i data-lucide="database" class="w-5 h-5"></i> База знаний</a>
         </nav>
 
         <div class="p-6 mt-auto border-t border-white/5 space-y-4">
             <div onclick="toggleChat(true)" class="p-5 bg-black border gold-border rounded-[28px] cursor-pointer hover:bg-zinc-900 transition-all">
-                <div class="flex items-center gap-2 mb-2">
-                    <i data-lucide="sparkles" class="w-4 h-4 gold-text"></i>
-                    <p class="text-[10px] font-black gold-text uppercase italic tracking-widest">Lex Intelligence</p>
-                </div>
-                <button class="w-full py-2.5 bg-white text-black text-[10px] font-black rounded-xl uppercase">Открыть чат</button>
+                <div class="flex items-center gap-2 mb-2"><i data-lucide="sparkles" class="w-4 h-4 gold-text"></i><p class="text-[10px] font-black gold-text uppercase italic tracking-widest">Lex AI Online</p></div>
+                <button class="w-full py-2 bg-white text-black text-[9px] font-black rounded-xl uppercase">Чат поддержки</button>
             </div>
             <div class="flex items-center gap-3 px-2">
-                <div class="w-10 h-10 rounded-full gold-border p-0.5 bg-zinc-900 flex items-center justify-center overflow-hidden text-gray-400">
-                    <i data-lucide="user"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold truncate">{{ request.user.username|default:"Vova" }}</p>
-                    <p class="text-[9px] text-gray-500 font-bold uppercase italic">Premium Resident</p>
-                </div>
+                <div class="w-8 h-8 rounded-full gold-border flex items-center justify-center text-gray-500"><i data-lucide="user" class="w-4 h-4"></i></div>
+                <div class="overflow-hidden"><p class="text-xs font-bold truncate">{{ request.user.username|default:"Vova" }}</p></div>
             </div>
-            <a href="{% url 'users:token_obtain_pair' %}" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-red-500/10 text-red-400 text-xs font-bold transition-all">
-                <i data-lucide="log-out" class="w-4 h-4"></i> ВЫЙТИ
-            </a>
+            <a href="{% url 'users:token_obtain_pair' %}" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-red-500/10 text-red-400 text-xs font-bold transition-all"><i data-lucide="log-out" class="w-4 h-4"></i> Выход</a>
         </div>
     </aside>
 
     <main class="flex-1 flex flex-col relative overflow-hidden">
         <header class="h-20 border-b border-white/5 flex items-center justify-between px-10 bg-black/50 backdrop-blur-xl z-40">
             <h2 id="header-title" class="text-sm font-bold uppercase tracking-[0.2em] text-gray-500">Дашборд</h2>
-            <div class="flex items-center gap-4 bg-white/5 border border-white/5 px-4 py-2 rounded-full">
+            <div class="flex items-center gap-4 bg-white/5 border border-white/5 px-4 py-2 rounded-full text-gray-400">
                 <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span class="text-[10px] font-black uppercase italic tracking-widest">Spain Law OS 2026</span>
+                <span class="text-[10px] font-black uppercase italic tracking-widest">Spain Law 2026</span>
             </div>
         </header>
 
@@ -158,134 +113,75 @@
 
             <section id="section-dashboard" class="section-fade space-y-12">
                 <div class="flex justify-between items-start">
-                    <div class="max-w-2xl">
+                    <div>
                         <h1 class="text-5xl font-black italic mb-4 leading-tight">С возвращением, <span class="gold-text">{{ request.user.username }}</span>!</h1>
-                        <p class="text-gray-400 text-lg italic">Управляйте обучением и заказывайте необходимые услуги в один клик.</p>
+                        <p class="text-gray-400 text-lg italic italic">Управляйте вашим переездом и обучением в единой системе.</p>
                     </div>
-                    <div class="bg-zinc-900 p-6 rounded-[32px] border gold-border flex items-center gap-4 shadow-2xl">
-                        <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-yellow-400 shadow-[0_0_15px_rgba(220,38,38,0.3)]">
-                            <i data-lucide="map-pin"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-zinc-500 uppercase font-black tracking-widest mb-1">Region</p>
-                            <p class="text-xl font-black text-white leading-none">ESPAÑA</p>
-                        </div>
+                    <div class="bg-zinc-900 p-6 rounded-[32px] border gold-border flex items-center gap-4">
+                        <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-yellow-400 shadow-xl"><i data-lucide="map-pin"></i></div>
+                        <div><p class="text-[10px] text-zinc-500 uppercase font-black tracking-widest mb-1">Status</p><p class="text-xl font-black text-white leading-none">ACTIVE</p></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-2 roadmap-container p-10 flex flex-col justify-between min-h-[340px]">
                         <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-[10px] font-black gold-text uppercase tracking-[0.3em] mb-2 italic">Roadmap Progress</p>
-                                <h3 class="text-3xl font-black italic italic">Ваш путь к резиденции</h3>
-                            </div>
-                            <button onclick="switchSection('courses')" class="btn-roadmap">
-                                <span>Смотреть модули</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4 text-gold-500"></i>
-                            </button>
+                            <div><p class="text-[10px] font-black gold-text uppercase tracking-[0.3em] mb-2 italic">Roadmap Progress</p><h3 class="text-3xl font-black italic">Ваш путь к резиденции</h3></div>
+                            <button onclick="switchSection('courses')" class="btn-roadmap"><span>Смотреть модули</span><i data-lucide="arrow-right" class="w-4 h-4 text-gold-500"></i></button>
                         </div>
-
                         <div class="relative py-12 px-6">
                             <div class="roadmap-line"></div>
                             <div class="flex justify-between items-center relative z-10 text-center">
-                                <div class="flex flex-col items-center gap-4">
-                                    <div class="step-node active"></div>
-                                    <span class="text-[9px] font-bold text-white uppercase italic">Старт</span>
-                                </div>
-                                <div class="flex flex-col items-center gap-4">
-                                    <div class="step-node active"></div>
-                                    <span class="text-[9px] font-bold text-white uppercase italic">Сбор</span>
-                                </div>
-                                <div class="flex flex-col items-center gap-4">
-                                    <div class="step-node"></div>
-                                    <span class="text-[9px] font-bold text-gray-600 uppercase italic">Подача</span>
-                                </div>
-                                <div class="flex flex-col items-center gap-4">
-                                    <div class="step-node"></div>
-                                    <span class="text-[9px] font-bold text-gray-600 uppercase italic">Карта</span>
-                                </div>
+                                <div class="flex flex-col items-center gap-4"><div class="step-node active"></div><span class="text-[9px] font-bold text-white uppercase italic">Старт</span></div>
+                                <div class="flex flex-col items-center gap-4"><div class="step-node active"></div><span class="text-[9px] font-bold text-white uppercase italic">Сбор</span></div>
+                                <div class="flex flex-col items-center gap-4"><div class="step-node"></div><span class="text-[9px] font-bold text-gray-600 uppercase italic">Подача</span></div>
+                                <div class="flex flex-col items-center gap-4"><div class="step-node"></div><span class="text-[9px] font-bold text-gray-600 uppercase italic">Карта</span></div>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-500 italic">Следующий шаг: <span class="text-white">Подготовка справок о доходах.</span></p>
                     </div>
-
-                    <div onclick="toggleChat(true)" class="ai-core-container p-10 flex flex-col items-center justify-center text-center overflow-hidden group">
+                    <div onclick="toggleChat(true)" class="ai-core-container p-10 flex flex-col items-center justify-center text-center overflow-hidden">
                         <div class="absolute inset-0 flex items-center justify-center"><div class="orb"></div></div>
-                        <div class="relative z-10 space-y-6 text-center">
-                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
-                                <i data-lucide="sparkles" class="text-black w-7 h-7"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-black italic gold-text uppercase mb-1">Lex AI Online</h4>
-                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em]">Кликни, чтобы спросить</p>
-                            </div>
+                        <div class="relative z-10 space-y-6">
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"><i data-lucide="sparkles" class="text-black w-7 h-7"></i></div>
+                            <div><h4 class="text-xl font-black italic gold-text uppercase mb-1">Lex AI Online</h4><p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em]">Спросить</p></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-6">
-                    <h3 class="text-xl font-black italic gold-text uppercase">Маркетплейс услуг</h3>
+                    <h3 class="text-xl font-black italic gold-text uppercase italic">Маркетплейс услуг</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div class="premium-card p-8 flex flex-col justify-between min-h-[220px] group">
-                            <div>
-                                <i data-lucide="fingerprint" class="text-gold-500 mb-4 w-7 h-7"></i>
-                                <h4 class="text-md font-bold italic uppercase tracking-tighter">Цифровая подпись</h4>
-                                <p class="text-[10px] text-gray-500 italic">Получение сертификата FNMT онлайн.</p>
-                            </div>
-                            <div class="flex justify-between items-center mt-6">
-                                <span class="text-xl font-black italic">€49</span>
-                                <button onclick="addToCart('Цифровая подпись', 49)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button>
-                            </div>
+                            <div><i data-lucide="fingerprint" class="text-gold-500 mb-4 w-7 h-7"></i><h4 class="text-md font-bold italic uppercase tracking-tighter">Цифровая подпись</h4><p class="text-[10px] text-gray-500 italic italic">Получение сертификата FNMT за 24 часа.</p></div>
+                            <div class="flex justify-between items-center mt-6"><span class="text-xl font-black italic italic">€49</span><button onclick="addToCart('Цифровая подпись', 49)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button></div>
                         </div>
                         <div class="premium-card p-8 flex flex-col justify-between min-h-[220px] group">
-                            <div>
-                                <i data-lucide="languages" class="text-gold-500 mb-4 w-7 h-7"></i>
-                                <h4 class="text-md font-bold italic uppercase tracking-tighter">Перевод Хурадо</h4>
-                                <p class="text-[10px] text-gray-500 italic">Присяжный перевод документов.</p>
-                            </div>
-                            <div class="flex justify-between items-center mt-6">
-                                <span class="text-xl font-black italic">€35</span>
-                                <button onclick="addToCart('Перевод Хурадо', 35)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button>
-                            </div>
-                        </div>
-                        <div class="premium-card p-8 flex flex-col justify-between min-h-[220px] group">
-                            <div>
-                                <i data-lucide="shield-check" class="text-gold-500 mb-4 w-7 h-7"></i>
-                                <h4 class="text-md font-bold italic uppercase tracking-tighter">Страховка ВНЖ</h4>
-                                <p class="text-[10px] text-gray-500 italic">Полис Sin Copagos без доплат.</p>
-                            </div>
-                            <div class="flex justify-between items-center mt-6">
-                                <span class="text-xl font-black italic">€50</span>
-                                <button onclick="addToCart('Страховка ВНЖ', 50)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button>
-                            </div>
+                            <div><i data-lucide="languages" class="text-gold-500 mb-4 w-7 h-7"></i><h4 class="text-md font-bold italic uppercase tracking-tighter">Перевод Хурадо</h4><p class="text-[10px] text-gray-500 italic italic">Присяжный перевод официальных справок.</p></div>
+                            <div class="flex justify-between items-center mt-6"><span class="text-xl font-black italic italic">€35</span><button onclick="addToCart('Перевод Хурадо', 35)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button></div>
                         </div>
                         <div class="premium-card p-8 flex flex-col justify-between min-h-[220px] group border-gold-500/20">
-                            <div>
-                                <i data-lucide="zap" class="text-gold-500 mb-4 w-7 h-7"></i>
-                                <h4 class="text-md font-bold italic uppercase tracking-tighter">Срочная Сита</h4>
-                                <p class="text-[10px] text-gray-500 italic">Поиск записи на отпечатки (TIE).</p>
-                            </div>
-                            <div class="flex justify-between items-center mt-6">
-                                <span class="text-xl font-black italic">€25</span>
-                                <button onclick="addToCart('Срочная Сита', 25)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button>
-                            </div>
+                            <div><i data-lucide="calendar" class="text-gold-500 mb-4 w-7 h-7"></i><h4 class="text-md font-bold italic uppercase tracking-tighter">Срочная Сита</h4><p class="text-[10px] text-gray-500 italic italic">Поиск записи на отпечатки в полиции.</p></div>
+                            <div class="flex justify-between items-center mt-6"><span class="text-xl font-black italic italic">€25</span><button onclick="addToCart('Срочная Сита', 25)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button></div>
+                        </div>
+                        <div class="premium-card p-8 flex flex-col justify-between min-h-[220px] group">
+                            <div><i data-lucide="search-check" class="text-gold-500 mb-4 w-7 h-7"></i><h4 class="text-md font-bold italic uppercase tracking-tighter">Аудит кейса</h4><p class="text-[10px] text-gray-500 italic italic">Полная проверка документов адвокатом.</p></div>
+                            <div class="flex justify-between items-center mt-6"><span class="text-xl font-black italic italic">€89</span><button onclick="addToCart('Аудит документов', 89)" class="p-3 bg-white/5 rounded-2xl hover:bg-gold-500 hover:text-black transition-all"><i data-lucide="plus"></i></button></div>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section id="section-courses" class="hidden section-fade space-y-8">
-                <h2 class="text-3xl font-black italic gold-text uppercase">Библиотека программ</h2>
+                <h2 class="text-3xl font-black italic gold-text uppercase italic">Библиотека программ</h2>
                 <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </section>
 
             <section id="section-lesson" class="hidden section-fade"><div id="lesson-content" class="max-w-6xl mx-auto space-y-8"></div></section>
 
             <section id="section-database" class="hidden section-fade grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="premium-card p-10 text-center"><i data-lucide="file-text" class="w-12 h-12 mx-auto mb-6 text-indigo-400"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Шаблоны EX</h5><p class="text-xs text-gray-500 italic">Актуальные бланки 2026.</p></div>
-                <div class="premium-card p-10 text-center"><i data-lucide="gavel" class="w-12 h-12 mx-auto mb-6 text-yellow-500"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Адвокаты</h5><p class="text-xs text-gray-500 italic">Практика и прецеденты.</p></div>
-                <div class="premium-card p-10 text-center"><i data-lucide="map" class="w-12 h-12 mx-auto mb-6 text-green-500"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Гайды</h5><p class="text-xs text-gray-500 italic">Инструкции по городам.</p></div>
+                <div class="premium-card p-10 text-center"><i data-lucide="file-text" class="w-12 h-12 mx-auto mb-6 text-indigo-400"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Шаблоны EX</h5><p class="text-xs text-gray-500 italic">Полный архив бланков 2026.</p></div>
+                <div class="premium-card p-10 text-center border-yellow-500/20"><i data-lucide="gavel" class="w-12 h-12 mx-auto mb-6 text-yellow-500"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Адвокаты</h5><p class="text-xs text-gray-500 italic">Разборы судебных прецедентов.</p></div>
+                <div class="premium-card p-10 text-center"><i data-lucide="map" class="w-12 h-12 mx-auto mb-6 text-green-500"></i><h5 class="font-bold text-xl mb-2 italic uppercase">Гайды</h5><p class="text-xs text-gray-500 italic">Специфика подачи по регионам.</p></div>
             </section>
         </div>
 
@@ -294,13 +190,13 @@
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-gold-500 shadow-xl"><i data-lucide="shopping-bag"></i></div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Выбрано услуг: <span id="cart-count">0</span></p>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Выбрано: <span id="cart-count">0</span></p>
                         <p class="text-xl font-black text-black leading-none">ИТОГО: €<span id="cart-total">0</span></p>
                     </div>
                 </div>
                 <div class="flex gap-3">
                     <button onclick="clearCart()" class="px-6 py-4 bg-gray-100 text-gray-500 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-all">Сброс</button>
-                    <button onclick="checkout()" class="px-8 py-4 bg-black text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-black/20">Оформить заказ</button>
+                    <button onclick="checkout()" class="px-8 py-4 bg-black text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-black/20">Заказать</button>
                 </div>
             </div>
         </div>
@@ -311,26 +207,45 @@
                 <button onclick="toggleChat(false)" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div id="chat-messages" class="flex-1 p-6 space-y-4 overflow-y-auto bg-black/40 text-[11px] text-gray-300 italic custom-scrollbar">
-                <div class="bg-white/5 border border-white/5 p-4 rounded-2xl rounded-tl-none leading-relaxed">
-                    {{ request.user.username }}, система готова. Какой вопрос по резиденции обсудим сегодня?
-                </div>
+                <div class="bg-white/5 border border-white/5 p-4 rounded-2xl rounded-tl-none leading-relaxed italic">Vova, система готова. Опишите вашу ситуацию по резиденции.</div>
             </div>
             <div class="p-5 bg-black border-t border-white/5">
-                <div class="flex gap-2">
-                    <input id="chat-input" type="text" placeholder="Задать вопрос..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-white text-white transition-all">
-                    <button onclick="sendChatMessage()" class="p-3 bg-white text-black rounded-xl hover:bg-gray-200 transition-all"><i data-lucide="send" class="w-4 h-4"></i></button>
-                </div>
+                <div class="flex gap-2"><input id="chat-input" type="text" placeholder="Запрос..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white"><button onclick="sendChatMessage()" class="p-3 bg-white text-black rounded-xl hover:bg-gray-200 transition-all"><i data-lucide="send" class="w-4 h-4"></i></button></div>
             </div>
         </div>
 
-        <div id="payment-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-black/90 backdrop-blur-md">
-            <div class="bg-zinc-900 border gold-border rounded-[48px] p-12 max-w-md w-full text-center space-y-8 section-fade shadow-2xl">
-                <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto border border-yellow-500/20"><i data-lucide="lock" class="text-yellow-600 w-8 h-8"></i></div>
-                <h3 class="text-2xl font-black italic gold-text uppercase">Доступ ограничен</h3>
-                <p class="text-gray-400 text-sm italic">Этот курс доступен только Premium студентам.</p>
-                <div class="p-6 bg-white/5 rounded-3xl border border-white/5 font-black text-3xl italic tracking-tighter">€229</div>
-                <a href="{% url 'users:payments_create' %}" class="block w-full py-4 bg-white text-black rounded-2xl font-black uppercase shadow-xl hover:scale-[1.02] transition-transform">Разблокировать все</a>
-                <button onclick="closeModal()" class="text-xs font-bold text-gray-400 hover:text-white uppercase tracking-widest">Вернуться</button>
+        <div id="payment-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-black/95 backdrop-blur-xl overflow-y-auto custom-scrollbar">
+            <div class="max-w-6xl mx-auto w-full py-10">
+                <div class="flex justify-end mb-8"><button onclick="closeModal()" class="text-white/50 hover:text-white uppercase font-black text-[10px] tracking-widest flex items-center gap-2">Закрыть <i data-lucide="x" class="w-4 h-4"></i></button></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+                    <div class="glass-card hype-border rounded-[48px] md:rounded-[64px] p-10 md:p-14 flex flex-col group relative overflow-hidden">
+                        <div class="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] text-white/30 mb-8 md:mb-10 italic">Digital Starter</div>
+                        <div class="text-5xl md:text-7xl font-black mb-8 md:mb-12 italic gold-gradient tracking-tighter italic">€99</div>
+                        <ul class="space-y-4 md:space-y-6 mb-10 md:mb-16 flex-1 text-sm md:text-base font-bold text-white/50 italic">
+                            <li class="flex items-center gap-4"><i data-lucide="check-circle" class="w-5 h-5 text-[#D4AF37]"></i> 1 курс (Nomad / NLV / Study)</li>
+                            <li class="flex items-center gap-4"><i data-lucide="check-circle" class="w-5 h-5 text-[#D4AF37]"></i> База шаблонов 2026</li>
+                            <li class="flex items-center gap-4"><i data-lucide="check-circle" class="w-5 h-5 text-[#D4AF37]"></i> Доступ к комьюнити</li>
+                        </ul>
+                        <a href="{% url 'users:payments_create' %}" class="w-full py-6 md:py-7 border-2 border-[#D4AF37]/30 rounded-[28px] md:rounded-[32px] font-black uppercase tracking-[0.3em] hover:bg-[#D4AF37] hover:text-black transition-all text-center">
+                            Выбрать
+                        </a>
+                    </div>
+
+                    <div class="bg-white text-black rounded-[48px] md:rounded-[64px] p-10 md:p-14 flex flex-col relative overflow-hidden box-glow transform md:scale-105">
+                        <div class="absolute top-6 md:top-10 right-6 md:right-10 bg-black text-white text-[8px] md:text-[10px] font-black px-4 py-1.5 md:py-2 rounded-full uppercase italic animate-pulse">Most Powerful</div>
+                        <div class="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] text-black/30 mb-8 md:mb-10 italic">Full Ecosystem</div>
+                        <div class="text-5xl md:text-7xl font-black mb-8 md:mb-12 italic tracking-tighter italic">€229</div>
+                        <ul class="space-y-4 md:space-y-6 mb-10 md:mb-16 flex-1 text-sm md:text-base font-black italic">
+                            <li class="flex items-center gap-4"><i data-lucide="zap" class="w-5 h-5 fill-current"></i> ВСЕ курсы академии</li>
+                            <li class="flex items-center gap-4"><i data-lucide="zap" class="w-5 h-5 fill-current"></i> Безлимитный ИИ-консультант</li>
+                            <li class="flex items-center gap-4"><i data-lucide="zap" class="w-5 h-5 fill-current"></i> Пожизненные обновления</li>
+                            <li class="flex items-center gap-4"><i data-lucide="zap" class="w-5 h-5 fill-current"></i> Прямая поддержка</li>
+                        </ul>
+                        <a href="{% url 'users:payments_create' %}" class="w-full py-6 md:py-7 bg-black text-white rounded-[28px] md:rounded-[32px] font-black uppercase tracking-[0.3em] hover:bg-[#D4AF37] hover:text-black transition-all text-center">
+                            ПОЛУЧИТЬ ВСЁ
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -338,23 +253,17 @@
     <script>
         // SHOPPING CART
         let cart = [];
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            updateCartUI();
-        }
+        function addToCart(name, price) { cart.push({ name, price }); updateCartUI(); }
         function clearCart() { cart = []; updateCartUI(); }
         function updateCartUI() {
             const bar = document.getElementById('checkout-bar');
             const total = cart.reduce((sum, item) => sum + item.price, 0);
             document.getElementById('cart-count').innerText = cart.length;
             document.getElementById('cart-total').innerText = total;
-            if (cart.length > 0) bar.classList.add('visible');
-            else bar.classList.remove('visible');
+            if (cart.length > 0) bar.classList.add('visible'); else bar.classList.remove('visible');
         }
         function checkout() {
-            const items = cart.map(i => i.name).join(', ');
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            alert(`Заказ сформирован: ${items}\nИтого к оплате: €${total}\n\nСпециалист свяжется с вами для уточнения деталей.`);
+            alert(`Заказ сформирован на €${cart.reduce((sum, item) => sum + item.price, 0)}.\nСпециалист свяжется с вами в Telegram.`);
             clearCart();
         }
 
@@ -366,7 +275,6 @@
                 title: "{{ course.title|escapejs }}",
                 description: "{{ course.description|escapejs }}",
                 is_subscribed: {% if "Вводный" in course.title %}true{% elif course.id in user_subscriptions_ids %}true{% else %}false{% endif %},
-                is_free: {% if "Вводный" in course.title %}true{% else %}false{% endif %},
                 modules: [{% for module in course.modules.all %}{ title: "{{ module.title|escapejs }}", lessons: [{% for lesson in module.lessons.all %}{ id: {{ lesson.id }}, title: "{{ lesson.title|escapejs }}", desc: "{{ lesson.description|escapejs }}", video: "{{ lesson.video_link|escapejs }}" },{% endfor %}] },{% endfor %}]
             },
             {% endfor %}
@@ -381,16 +289,15 @@
             document.getElementById(`nav-${id}`)?.classList.add('active');
             const titles = { 'dashboard': 'Дашборд', 'courses': 'Библиотека', 'database': 'База знаний', 'lesson': 'Обучение' };
             document.getElementById('header-title').innerText = titles[id] || 'VissumLex';
-            document.getElementById('main-scroll').scrollTop = 0;
         }
 
         function renderCourses() {
             const grid = document.getElementById('courses-grid');
             grid.innerHTML = allCourses.map(c => `
                 <div onclick="openCourse(${c.id})" class="premium-card p-8 space-y-6 cursor-pointer relative overflow-hidden group">
-                    ${!c.is_subscribed ? `<div class="absolute inset-0 bg-black/80 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="lock" class="text-yellow-500 w-10 h-10 mb-2"></i><span class="text-[10px] font-black uppercase text-yellow-500 tracking-widest">Открыть</span></div>` : ''}
-                    <div class="flex justify-between items-center"><div class="w-12 h-12 ${c.is_subscribed ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-600'} rounded-2xl flex items-center justify-center border border-white/5 transition-colors group-hover:border-gold-500/50"><i data-lucide="${c.is_subscribed ? 'play' : 'lock'}"></i></div><span class="text-[9px] font-black uppercase italic ${c.is_free ? 'text-green-500' : 'text-gold-500'}">${c.is_free ? 'Free' : (c.is_subscribed ? 'Unlocked' : 'Premium')}</span></div>
-                    <h4 class="text-xl font-bold italic ${c.is_subscribed ? 'text-white' : 'text-gray-500'} italic uppercase tracking-tight transition-colors group-hover:text-white">${c.title}</h4>
+                    ${!c.is_subscribed ? `<div class="absolute inset-0 bg-black/80 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="lock" class="text-yellow-500 w-10 h-10 mb-2"></i><span class="text-[10px] font-black uppercase text-yellow-500 tracking-widest italic">Открыть</span></div>` : ''}
+                    <div class="flex justify-between items-center"><div class="w-12 h-12 ${c.is_subscribed ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-600'} rounded-2xl flex items-center justify-center border border-white/5 transition-colors group-hover:border-gold-500/50"><i data-lucide="${c.is_subscribed ? 'play' : 'lock'}"></i></div><span class="text-[9px] font-black uppercase italic gold-text">Course</span></div>
+                    <h4 class="text-xl font-bold italic ${c.is_subscribed ? 'text-white' : 'text-gray-400'} uppercase tracking-tight italic transition-colors group-hover:text-white">${c.title}</h4>
                 </div>
             `).join('');
             lucide.createIcons();
@@ -411,15 +318,15 @@
                         <button onclick="switchSection('courses')" class="text-xs font-bold text-gray-500 hover:text-white transition-all uppercase tracking-widest italic"><i data-lucide="arrow-left" class="inline w-4 h-4 mr-2"></i> Назад</button>
                         <div class="aspect-video bg-black rounded-[48px] overflow-hidden shadow-2xl border border-white/5 gold-border">${lesson && lesson.video ? `<iframe class="w-full h-full" src="${lesson.video}" frameborder="0" allowfullscreen></iframe>` : ''}</div>
                         <h1 class="text-4xl font-black italic gold-text uppercase italic tracking-tight italic">${lesson ? lesson.title : course.title}</h1>
-                        <p class="text-gray-400 italic italic">${lesson ? lesson.desc : course.description}</p>
+                        <p class="text-gray-400 italic italic italic">${lesson ? lesson.desc : course.description}</p>
                     </div>
                     <div class="w-full lg:w-80 space-y-6">
-                        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest italic">Программа</p>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Программа</p>
                         <div class="space-y-4">
                             ${course.modules.map(m => `
                                 <div><p class="text-[10px] font-bold text-gold-500 uppercase mb-3 px-2 italic underline underline-offset-8 decoration-gold-500/20">${m.title}</p>
                                     ${m.lessons.map(l => `
-                                        <div onclick="selectLesson(${course.id}, ${l.id})" class="p-4 rounded-2xl border ${lesson && l.id === lesson.id ? 'bg-white text-black border-white shadow-xl' : 'bg-white/5 border-white/5 hover:border-white/10'} cursor-pointer mb-1 flex items-center gap-3 transition-all"><i data-lucide="play" class="w-3 h-3"></i><span class="text-xs font-bold italic tracking-tight">${l.title}</span></div>
+                                        <div onclick="selectLesson(${course.id}, ${l.id})" class="p-4 rounded-2xl border ${lesson && l.id === lesson.id ? 'bg-white text-black border-white shadow-xl' : 'bg-white/5 border-white/5 hover:border-white/10'} cursor-pointer mb-1 flex items-center gap-3 transition-all"><i data-lucide="play" class="w-3 h-3"></i><span class="text-xs font-bold italic tracking-tight italic">${l.title}</span></div>
                                     `).join('')}
                                 </div>
                             `).join('')}
@@ -445,11 +352,10 @@
         function sendChatMessage() {
             const input = document.getElementById('chat-input'); const msgs = document.getElementById('chat-messages');
             if (!input.value.trim()) return;
-            const uDiv = document.createElement('div'); uDiv.className = "bg-white text-black p-4 rounded-2xl rounded-tr-none ml-10 text-[11px] font-bold";
-            uDiv.innerText = input.value; msgs.appendChild(uDiv); input.value = ''; msgs.scrollTop = msgs.scrollHeight;
+            const uDiv = document.createElement('div'); uDiv.className = "bg-white text-black p-4 rounded-2xl rounded-tr-none ml-10 text-[11px] font-bold italic"; uDiv.innerText = input.value; msgs.appendChild(uDiv); input.value = ''; msgs.scrollTop = msgs.scrollHeight;
             setTimeout(() => {
-                const aDiv = document.createElement('div'); aDiv.className = "bg-white/5 border border-white/5 p-4 rounded-2xl rounded-tl-none mr-10 leading-relaxed";
-                aDiv.innerText = "Анализирую... В 2026 году для вашего ВНЖ лучше всего подойдет подача через реестр Mercurio.";
+                const aDiv = document.createElement('div'); aDiv.className = "bg-white/5 border border-white/5 p-4 rounded-2xl rounded-tl-none mr-10 leading-relaxed italic text-gray-400";
+                aDiv.innerText = "Анализирую ситуацию по Испании... По закону 2026 года в вашем случае лучше всего начать с получения цифровой подписи.";
                 msgs.appendChild(aDiv); msgs.scrollTop = msgs.scrollHeight;
             }, 800);
         }
