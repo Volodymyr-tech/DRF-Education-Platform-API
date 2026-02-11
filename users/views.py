@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from materials.models import Course, Subscription
 
 from .models import CustomUser, Payments
-from .serializers import PaymentSerializer, RegisterSerializer, UserProfileSerializer
+from .serializers import PaymentSerializer, RegisterSerializer, UserProfileSerializer, UserStatisticsSerializer
 from .services import StripeTransaction
 
 
@@ -52,7 +52,19 @@ class CurrentUserView(APIView):
         # Добавляем ID курсов, на которые подписан пользователь, для удобства фронтенда
         data = serializer.data
         data['subscriptions_ids'] = list(request.user.subscriptions.values_list('course_id', flat=True))
+        data['is_superuser'] = request.user.is_superuser # Add superuser flag
         return Response(data)
+
+
+class UserStatisticsListView(generics.ListAPIView):
+    """View for superusers to see all users and their statistics"""
+    queryset = CustomUser.objects.all()
+    serializer_class = UserStatisticsSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ["email", "username"]
+    ordering_fields = ["date_joined", "last_login"]
+    ordering = ["-date_joined"]
 
 
 class PaymentsListAPIView(generics.ListAPIView):

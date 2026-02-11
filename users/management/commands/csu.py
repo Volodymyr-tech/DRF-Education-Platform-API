@@ -5,7 +5,7 @@ from users.models import CustomUser
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        user = CustomUser.objects.create(email="admin@sky.pro")
+        user = CustomUser.objects.create(email="admin@vova.pro")
         user.set_password("12345")
         user.is_active = True
         user.is_staff = True

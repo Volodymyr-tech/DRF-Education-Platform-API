@@ -50,3 +50,27 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data["password"],
         )
         return user
+
+
+class UserStatisticsSerializer(serializers.ModelSerializer):
+    subscriptions_count = serializers.SerializerMethodField()
+    last_login = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    date_joined = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            "id",
+            "email",
+            "username",
+            "phone_number",
+            "city",
+            "avatar",
+            "last_login",
+            "date_joined",
+            "is_active",
+            "subscriptions_count",
+        ]
+
+    def get_subscriptions_count(self, obj):
+        return obj.subscriptions.count()

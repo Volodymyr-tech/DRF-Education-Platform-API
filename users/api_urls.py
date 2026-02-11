@@ -9,6 +9,7 @@ from .views import (
     UserProfileViewSet,
     CurrentUserView,
     SessionTokenObtainPairView,
+    UserStatisticsListView, # Added
 )
 
 router = DefaultRouter()
@@ -28,4 +29,5 @@ urlpatterns = [
     ),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("me/", CurrentUserView.as_view(), name="current_user"),
+    path("users-stats/", UserStatisticsListView.as_view(), name="users_stats"), # Added
 ]
