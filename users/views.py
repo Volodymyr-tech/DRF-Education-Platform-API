@@ -51,7 +51,11 @@ class CurrentUserView(APIView):
         serializer = UserProfileSerializer(request.user)
         # Добавляем ID курсов, на которые подписан пользователь, для удобства фронтенда
         data = serializer.data
-        data['subscriptions_ids'] = list(request.user.subscriptions.values_list('course_id', flat=True))
+        if request.user.is_superuser:
+             data['subscriptions_ids'] = list(Course.objects.values_list('id', flat=True))
+        else:
+             data['subscriptions_ids'] = list(request.user.subscriptions.values_list('course_id', flat=True))
+        
         data['is_superuser'] = request.user.is_superuser # Add superuser flag
         return Response(data)
 
@@ -124,7 +128,10 @@ class SPAViewSecond(LoginRequiredMixin, TemplateView):
         # Передаем пустой список, он будет обновлен JS-ом.
         context['user_subscriptions_ids'] = [] 
         if self.request.user.is_authenticated:
-             context['user_subscriptions_ids'] = list(self.request.user.subscriptions.values_list('course_id', flat=True))
+             if self.request.user.is_superuser:
+                 context['user_subscriptions_ids'] = list(Course.objects.values_list('id', flat=True))
+             else:
+                 context['user_subscriptions_ids'] = list(self.request.user.subscriptions.values_list('course_id', flat=True))
 
         context['courses'] = courses
         return context

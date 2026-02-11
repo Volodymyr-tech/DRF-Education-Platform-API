@@ -1,0 +1,176 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$XkXkXkXkXkXk$XkXkXkXkXkXkXkXkXkXkXkXkXkXkXkXkXkXkXkXkXk=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@sky.pro",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z",
+      "phone_number": null,
+      "city": null,
+      "avatar": ""
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$YkYkYkYkYkYk$YkYkYkYkYkYkYkYkYkYkYkYkYkYkYkYkYkYkYkYkYk=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "student",
+      "first_name": "Ivan",
+      "last_name": "Ivanov",
+      "email": "student@sky.pro",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-01-02T00:00:00Z",
+      "phone_number": "+1234567890",
+      "city": "Moscow",
+      "avatar": ""
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 1,
+    "fields": {
+      "title": "Вводный курс: Основы ВНЖ",
+      "description": "Базовый курс по иммиграции в Испанию.",
+      "owner": 1,
+      "created_at": "2023-01-01T00:00:00Z",
+      "last_update": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 2,
+    "fields": {
+      "title": "Digital Nomad",
+      "description": "Полный гайд для цифровых кочевников.",
+      "owner": 1,
+      "created_at": "2023-01-02T00:00:00Z",
+      "last_update": "2023-01-02T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.module",
+    "pk": 1,
+    "fields": {
+      "title": "Модуль 1: Подготовка",
+      "description": "Сбор документов и апостилирование.",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.module",
+    "pk": 2,
+    "fields": {
+      "title": "Модуль 2: Подача",
+      "description": "Работа с платформой Mercurio.",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "module": 1,
+      "title": "Список документов",
+      "description": "Полный чек-лист необходимых документов.",
+      "video_link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "owner": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "module": 1,
+      "title": "Апостиль и перевод",
+      "description": "Как правильно оформить переводы.",
+      "video_link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "owner": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 3,
+    "fields": {
+      "course": 1,
+      "module": 2,
+      "title": "Регистрация в Mercurio",
+      "description": "Пошаговая инструкция по регистрации.",
+      "video_link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "owner": 1
+    }
+  },
+  {
+    "model": "materials.materialtemplate",
+    "pk": 1,
+    "fields": {
+      "title": "Форма EX-01",
+      "description": "Заявление на получение ВНЖ без права на работу.",
+      "file": "templates/ex-01.pdf",
+      "created_at": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.materialtemplate",
+    "pk": 2,
+    "fields": {
+      "title": "Форма 790-052",
+      "description": "Квитанция на оплату госпошлины.",
+      "file": "templates/790-052.pdf",
+      "created_at": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.materialguide",
+    "pk": 1,
+    "fields": {
+      "title": "Гайд по Валенсии",
+      "description": "Особенности подачи документов в Валенсии.",
+      "file": "guides/valencia-guide.pdf",
+      "created_at": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.materialguide",
+    "pk": 2,
+    "fields": {
+      "title": "Гайд по Барселоне",
+      "description": "Нюансы получения ситы в Барселоне.",
+      "file": "guides/barcelona-guide.pdf",
+      "created_at": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.lawyercase",
+    "pk": 1,
+    "fields": {
+      "title": "Отказ по доходам",
+      "description": "Разбор кейса с отказом из-за недостаточности средств.",
+      "video_link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "created_at": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "materials.lawyercase",
+    "pk": 2,
+    "fields": {
+      "title": "Успешная апелляция",
+      "description": "Как мы выиграли суд по Digital Nomad визе.",
+      "video_link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "created_at": "2023-01-01T00:00:00Z"
+    }
+  }
+]
